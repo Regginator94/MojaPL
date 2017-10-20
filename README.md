@@ -1,2 +1,0 @@
-# MojaPL
-MojaPL
