@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MojaP\u0141</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="sign_up">Utwórz konto</string>
+    <string name="forgot_password">Nie pamiętasz hasła?</string>
+    <string name="error_incorrect_login_data">Niepoprawne dane logowania!</string>
+    <string name="message_sent_link_to_reset_password">Link do resetu hasła wysłany na podany email.</string>
+    <string name="message_type_email">Wpisz email przypisany do Twojego konta.</string>
+    <string name="back_to_login">Powrót do ekranu logowania</string>
 </resources>
