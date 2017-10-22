@@ -33,6 +33,7 @@ public class LoginActivity extends Activity {
                     Toast.makeText(LoginActivity.this, R.string.error_incorrect_login_data,
                             Toast.LENGTH_LONG).show();
                 }
+                
             }
         });
 

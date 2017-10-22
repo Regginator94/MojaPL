@@ -7,4 +7,9 @@
     <string name="message_sent_link_to_reset_password">Link do resetu hasła wysłany na podany email.</string>
     <string name="message_type_email">Wpisz email przypisany do Twojego konta.</string>
     <string name="back_to_login">Powrót do ekranu logowania</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filtry">Filtry:</string>
+    <string name="settings">Ustawienia</string>
 </resources>
