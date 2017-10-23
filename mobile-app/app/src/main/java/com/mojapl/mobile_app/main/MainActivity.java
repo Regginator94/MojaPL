@@ -1,41 +1,39 @@
 package com.mojapl.mobile_app.main;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.mojapl.mobile_app.R;
-import com.mojapl.mobile_app.main.fragments.SettingsFragment;
+import com.mojapl.mobile_app.main.adapters.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
+
+    ViewPager mviewPager;
+    ViewPagerAdapter mViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mviewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mviewPager.setAdapter(mViewPagerAdapter);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent;
 
-
-        Fragment fragment = null;
-        //noinspection SimplifiableIfStatement
         if (id == R.id.menu_settings) {
-            fragment = new SettingsFragment();
+            intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
-
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment_container, fragment);
-        ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-        ft.commit();
 
         return super.onOptionsItemSelected(item);
 
