@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 import com.mojapl.mobile_app.R;
 
-/**
- * Created by shkliare on 10/22/17.
- */
 
 public class DashboardListFragment extends Fragment {
 
