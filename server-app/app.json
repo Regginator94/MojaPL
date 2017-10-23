@@ -1,0 +1,8 @@
+{
+  "name": "Server-APP: Node.js",
+  "description": "There is no description",
+  "repository": "https://github.com/heroku/node-js-getting-started - change repo",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}
