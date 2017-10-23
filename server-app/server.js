@@ -3,6 +3,8 @@ var express = require('express'),
 
 const Nav = require('./api_methods/nav_cti_data');
 
+const PlNews = require('./api_methods/pl_news');
+
 app.set('port', (process.env.PORT || 5000));
 
 app.get('/', function(request, response) {
@@ -10,11 +12,9 @@ app.get('/', function(request, response) {
 });
 
 app.get('/api/events', function(request, response){
-	Nav.getData(response);
+	PlNews.getData(response);
 });
 
 app.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
 });
-
-
