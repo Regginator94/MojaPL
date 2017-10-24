@@ -25,7 +25,7 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (emailInput.getText().toString().equals("test@test") && passwordInput.getText().toString().equals("test")) {
+                if ((emailInput.getText().toString().equals("test@test") && passwordInput.getText().toString().equals("test")) || Config.DEBUG) {
                             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                             LoginActivity.this.startActivity(mainIntent);
                             LoginActivity.this.finish();
