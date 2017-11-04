@@ -15,6 +15,8 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
+    "fb": "^2.0.0",
+    "mysql": "^2.15.0",
     "request": "^2.83.0",
     "tinyreq": "^3.2.6"
   },
