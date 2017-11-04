@@ -1,14 +1,15 @@
 const request = require('tinyreq');
 const cheerio = require('cheerio');
 const mainPageURL = 'https://www.p.lodz.pl';
-
+const DBConnection = require('./DBConnection');
 var PLItem = require('./objects/PLItem');
 
 exports.getData = function() {
     var pageBody = '';
     request("https://www.p.lodz.pl/pl/lista/aktualnosci", function (err, body) {
         var plItems = getItems(body);
-        console.log(plItems);
+        // console.log(plItems);
+        DBConnection.insertPLNews(plItems);
     });
 }
 

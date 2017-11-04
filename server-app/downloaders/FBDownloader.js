@@ -4,6 +4,7 @@ const fbUrl = 'https://graph.facebook.com/v2.9/';
 const fbToken = '/posts?access_token=141819799794306|ytHLoE5jcAAjF7Mgg3xUIKrvKk4';
 const fbHome = 'https://www.facebook.com/';
 const FBItem = require('./objects/FBItem');
+const DBConnection = require('./DBConnection');
 
 exports.getData = function(pageId) {
 	https.get(fbUrl+pageId+fbToken, (res) => {	  
@@ -20,7 +21,7 @@ exports.getData = function(pageId) {
  				post = new FBItem(post.created_time, post.message, post.id, postUrl, pageId);
  				PostList.push(post);
  			}
- 			console.log(PostList);
+ 			DBConnection.insertFBPosts(PostList);
         });
 	}).on('error', (e) => {
 	  console.error(e);

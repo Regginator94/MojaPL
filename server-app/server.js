@@ -1,6 +1,10 @@
 var express = require('express'),
 	app = express();
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 const FBDownloader = require('./downloaders/FBDownloader');
 const WEEIADownloader = require('./downloaders/WEEIADownloader');
 const PLDownloader = require('./downloaders/PLDownloader');
@@ -13,12 +17,15 @@ app.get('/', function(request, response) {
 });
 
 app.get('/api/events', function(request, response){
-	//FBDownloader.getData('lodzpl');
+	//FBDownloader.getData('Politechnika.Lodzka');
 	PLDownloader.getData();
-
 });
+
+app.post('/data', function(request, response) {
+	DBConnection.getNews(response, request.body.date);
+});
+
 
 app.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-  DBConnection.getData();
 });

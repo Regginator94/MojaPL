@@ -3,7 +3,7 @@
 class FBItem {
 	constructor(_createdTime, _message, _id, _postUrl, _pageId) {
 		this.id = _id;
-		this.createdTime = _createdTime;
+		this.createdTime = _createdTime.replace(/T/, ' ').replace(/\..+/, '').replace('+0000','');
 		this.message = _message;
 		this.postUrl = _postUrl
 		this.pageId = _pageId;
