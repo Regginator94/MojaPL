@@ -12,4 +12,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="filtry">Filtry:</string>
     <string name="settings">Ustawienia</string>
+    <string name="error_string_dont_match_each_other">Hasła nie pasują do siebie!</string>
+    <string name="error_empty_form_fields">Puste dane w formularzu!</string>
+    <string name="message_registration_successful">Rejestracja zakończona pomyślnie!</string>
+    <string name="error_registration_failed">Błąd podczas rejestracji!</string>
+    <string name="label_logout">Wyloguj</string>
 </resources>

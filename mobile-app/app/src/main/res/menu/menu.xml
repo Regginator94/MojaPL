@@ -9,4 +9,8 @@
         android:id="@+id/menu_example"
         android:title="Example">
     </item>
+    <item
+        android:id="@+id/menu_logout"
+        android:title="@string/label_logout">
+    </item>
 </menu>
