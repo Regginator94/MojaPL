@@ -34,6 +34,10 @@ app.post('/login', function(request, response){
  	DBConnection.userLogin(response, request.body.email, request.body.password);
 });
 
+app.post('/tokenLogin', function(request, response) {
+	DBConnection.userLoginToken(response, request.body.token);
+});
+
 app.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
 });

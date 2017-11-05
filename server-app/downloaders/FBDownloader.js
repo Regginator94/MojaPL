@@ -22,6 +22,7 @@ exports.getData = function(pageId) {
  				PostList.push(post);
  			}
  			DBConnection.insertFBPosts(PostList);
+ 			
         });
 	}).on('error', (e) => {
 	  console.error(e);
