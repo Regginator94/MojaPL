@@ -1,6 +1,9 @@
 var mysql      = require('mysql');
 var emojiStrip = require('emoji-strip')
 var EventDBItem = require('./objects/EventDBItem');
+const uuidV1 = require('uuid/v1');
+var dateNow = new Date();
+
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
@@ -43,7 +46,8 @@ exports.insertPLNews = function(postsList) {
 exports.getNews = function(response, lastLoginDate){	
 	lastLoginDate = '2012-12-25 00:00:00';
 	var eventDBList = [];
-	connection.query("SELECT E_ID, E_O_ID, E_C_ID, E_TEXT, E_TITLE, E_IMAGE_URL, E_CREATE_DATE, E_URL, E_FB_POST FROM events WHERE E_CREATE_DATE >='"+lastLoginDate+"'", function (err, result, fields) {
+	var query ="SELECT E_ID, E_O_ID, E_C_ID, E_TEXT, E_TITLE, E_IMAGE_URL, E_CREATE_DATE, E_URL, E_FB_POST FROM events WHERE E_CREATE_DATE >='"+lastLoginDate+"'";
+	connection.query(query, function (err, result, fields) {
 	    if (err){
 	    	throw err;
 	    } 
@@ -58,4 +62,66 @@ exports.getNews = function(response, lastLoginDate){
 	        response.end(); 	
 	    }
 	  });
+}
+
+exports.addUser = function(response, email, password){
+	var userToken = uuidV1();
+	var query = "SELECT EXISTS(SELECT * FROM users WHERE U_EMAIL LIKE '"+email+"')";
+	connection.query(query, function (err, result, fields) {
+	    if (err){
+	    	throw err;
+	    } 
+	    else{
+	    	if(!userExists(result)) {
+	    		query = 'INSERT INTO users (U_EMAIL, U_PASSWORD, U_CREATE_DATE, U_TOKEN)  VALUES ("'+email+'", "'+password+'", NOW() ,"'+userToken+'")';
+	    		connection.query(query, function (err, result, fields) {
+	    			if (err){
+				    	throw err;
+				    } 
+				    else {
+    		    		response.setHeader('Content-Type', 'application/json');
+			   	 		response.write(JSON.stringify(userToken));
+				    	response.end();
+				    }
+	    		});
+	    	} else {
+	    		response.setHeader('Content-Type', 'application/json');
+	   	 		response.write(JSON.stringify("User already exists"));
+		    	response.end();
+	    	}
+	    }
+   	});
+}
+
+exports.userLogin = function(response, email, password) {
+	var query = "SELECT EXISTS(SELECT * FROM users WHERE U_EMAIL LIKE '"+email+"' AND U_PASSWORD LIKE '"+password+"')";
+	connection.query(query, function (err, result, fields) {
+	    if (err){
+	    	throw err;
+	    } 
+	    else{
+	    	if(userLoginDataCorrect(result)){
+	    		response.setHeader('Content-Type', 'application/json');
+	   	 		response.write(JSON.stringify("Logged"));
+		    	response.end();
+	    	} 
+	    	else {
+	    		response.setHeader('Content-Type', 'application/json');
+	   	 		response.write(JSON.stringify("Incorrect login data"));
+		    	response.end();
+	    	}
+	    }
+   	});
+}
+
+function userExists(result){
+	var queryResult = result[0];
+	var queryKey = Object.keys(queryResult)[0];
+	return queryResult[queryKey];
+}
+
+function userLoginDataCorrect(result){
+	var queryResult = result[0];
+	var queryKey = Object.keys(queryResult)[0];
+	return queryResult[queryKey];
 }

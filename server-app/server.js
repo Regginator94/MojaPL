@@ -21,10 +21,18 @@ app.get('/api/events', function(request, response){
 	PLDownloader.getData();
 });
 
+//wymagany parametr date=2012-12-25 00:00:00
 app.post('/data', function(request, response) {
 	DBConnection.getNews(response, request.body.date);
 });
 
+app.post('/createUser', function(request, response){
+ 	DBConnection.addUser(response, request.body.email, request.body.password);
+});
+
+app.post('/login', function(request, response){
+ 	DBConnection.userLogin(response, request.body.email, request.body.password);
+});
 
 app.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
