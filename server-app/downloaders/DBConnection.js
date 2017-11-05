@@ -5,10 +5,10 @@ const uuidV1 = require('uuid/v1');
 var dateNow = new Date();
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'mojapl_db',
+  host     : 'us-cdbr-iron-east-05.cleardb.net',
+  user     : 'bf038d7d725ad7',
+  password : '0dfef14d',
+  database : 'heroku_cd344eaef5f5056',
 });
 
 exports.getData = function() {

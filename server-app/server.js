@@ -18,7 +18,7 @@ app.get('/', function(request, response) {
 
 app.get('/api/events', function(request, response){
 	//FBDownloader.getData('Politechnika.Lodzka');
-	PLDownloader.getData();
+	//PLDownloader.getData();
 });
 
 //wymagany parametr date=2012-12-25 00:00:00
