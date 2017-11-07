@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 
 public interface IClientHTTP {
 
-    @GET("/api/events")
+    @GET("/data")
     Call<List<Event>> getEvents();
 
     @POST("/createUser")

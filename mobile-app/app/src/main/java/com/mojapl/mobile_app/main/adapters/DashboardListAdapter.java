@@ -1,5 +1,6 @@
 package com.mojapl.mobile_app.main.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,20 +10,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mojapl.mobile_app.R;
-import com.mojapl.mobile_app.main.models.DashboardListItem;
+import com.mojapl.mobile_app.main.models.Event;
 
 import java.util.List;
 
 public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdapter.ViewHolder> implements View.OnClickListener {
 
-    private List<DashboardListItem> mItemList;
-
+    private List<Event> mEventList;
+    private Context mContext;
     private int expandedPosition = -1;
     private boolean isCollapsed = true;
 
-    public void setItems(List<DashboardListItem> items) {
-        this.mItemList = items;
+    public void setItems(List<Event> eventList) {
+        this.mEventList = eventList;
         notifyDataSetChanged();
+    }
+
+    public DashboardListAdapter(Context context, List<Event> events) {
+        mContext = context;
+        mEventList = events;
     }
 
     @Override
@@ -37,9 +43,10 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.title.setText(mItemList.get(position).getTitle());
-        holder.logo.setImageResource(mItemList.get(position).getUrl());
-        holder.content.setText(mItemList.get(position).getContent());
+        holder.title.setText(mEventList.get(position).getTitle());
+//        holder.image.setImageResource(mEventList.get(position).getResource());
+        holder.content.setText(mEventList.get(position).getContent());
+//        holder.imageExpanded.setImageResource(mEventList.get(position).getResourceExpanded());
 
         if (position == expandedPosition && isCollapsed) {
             holder.expandedView.setVisibility(View.VISIBLE);
@@ -53,9 +60,14 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     }
 
+    public void updateList(List<Event> items) {
+        mEventList = items;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return mItemList == null ? 0 : mItemList.size();
+        return mEventList == null ? 0 : mEventList.size();
     }
 
     @Override
@@ -72,16 +84,18 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView logo;
+        //        public ImageView image;
         public LinearLayout expandedView;
         public TextView content;
+        public ImageView imageExpanded;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.text_view);
-            logo = (ImageView) itemView.findViewById(R.id.image_view);
+            title = (TextView) itemView.findViewById(R.id.title);
+//            image = (ImageView) itemView.findViewById(R.id.image_view);
             expandedView = (LinearLayout) itemView.findViewById(R.id.expandView);
             content = (TextView) itemView.findViewById(R.id.content);
+//            imageExpanded = (ImageView) itemView.findViewById(R.id.image_expanded);
         }
 
     }
