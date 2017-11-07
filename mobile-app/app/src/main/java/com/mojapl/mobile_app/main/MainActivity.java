@@ -1,6 +1,7 @@
 package com.mojapl.mobile_app.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_settings) {
             intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.menu_logout) {
+            SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear().commit();
+            intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
         }
 
         return super.onOptionsItemSelected(item);

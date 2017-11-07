@@ -2,7 +2,10 @@ package com.mojapl.mobile_app.main.connection;
 
 import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
+import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.User;
 import com.mojapl.mobile_app.main.services.EventsService;
+import com.mojapl.mobile_app.main.services.UserService;
 
 
 import okhttp3.OkHttpClient;
@@ -10,13 +13,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Klaudia on 23.10.2017.
- */
-
 public class Connector {
     private static final String TAG = "Communicator";
-    private  static Connector connector = null;
+    private static Connector connector = null;
     private OkHttpClient.Builder httpClient;
     private Retrofit.Builder builder;
     private Retrofit retrofit;
@@ -40,7 +39,7 @@ public class Connector {
     }
 
     public static Connector getInstance(){
-        if(connector == null){
+        if (connector == null){
             connector = new Connector();
         }
         return connector;
@@ -48,7 +47,16 @@ public class Connector {
     public void getEvents(ServerRequestListener serverRequestListener) {
         EventsService eventsService = new EventsService(serverRequestListener);
         eventsService.getData();
+    }
 
+    public void createUser(UserRequestListener userRequestListener, User user) {
+        UserService userService = new UserService(userRequestListener);
+        userService.saveUser(user);
+    }
+
+    public void loginUser(UserRequestListener userRequestListener, User user) {
+        UserService userService = new UserService(userRequestListener);
+        userService.findUser(user);
     }
 
     public Retrofit getRetrofit() {

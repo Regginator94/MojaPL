@@ -1,19 +1,23 @@
 package com.mojapl.mobile_app.main.connection;
 
 import com.mojapl.mobile_app.main.models.Event;
+import com.mojapl.mobile_app.main.models.User;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
-
-
-/**
- * Created by Klaudia on 23.10.2017.
- */
+import retrofit2.http.POST;
 
 public interface IClientHTTP {
+
     @GET("/api/events")
-    Call<List<Event>> getEvents(
-    );
+    Call<List<Event>> getEvents();
+
+    @POST("/createUser")
+    Call<String> createUser(@Body User user);
+
+    @POST("/login")
+    Call<String> loginUser(@Body User user);
 }

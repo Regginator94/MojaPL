@@ -2,6 +2,7 @@ package com.mojapl.mobile_app.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
+import com.mojapl.mobile_app.main.connection.Connector;
+import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.User;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements UserRequestListener {
+
+    private UserRequestListener userRequestListener;
+    private User user;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -21,19 +28,20 @@ public class LoginActivity extends Activity {
         final EditText emailInput = (EditText)findViewById(R.id.input_user);
         final EditText passwordInput = (EditText)findViewById(R.id.input_password);
 
+        userRequestListener = this;
+
         Button loginButton = (Button)findViewById(R.id.button_sign_in);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((emailInput.getText().toString().equals("test@test") && passwordInput.getText().toString().equals("test")) || Config.DEBUG) {
-                            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                            LoginActivity.this.startActivity(mainIntent);
-                            LoginActivity.this.finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, R.string.error_incorrect_login_data,
+                if (emailInput.getText().toString().isEmpty() || passwordInput.getText().toString().isEmpty()) {
+                    Toast.makeText(LoginActivity.this, R.string.error_empty_form_fields,
                             Toast.LENGTH_LONG).show();
+                    return;
                 }
-                
+                user = new User(emailInput.getText().toString(), passwordInput.getText().toString());
+                Connector connector = Connector.getInstance();
+                connector.loginUser(userRequestListener, user);
             }
         });
 
@@ -60,5 +68,24 @@ public class LoginActivity extends Activity {
                 LoginActivity.this.finish();
             }
         });
+    }
+
+    @Override
+    public void serviceSuccess(String message) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("LoginData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("email", user.getEmail());
+        editor.putString("password", user.getPassword());
+        editor.commit();
+
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        LoginActivity.this.startActivity(mainIntent);
+        LoginActivity.this.finish();
+    }
+
+    @Override
+    public void serviceFailure(Exception e) {
+        Toast.makeText(LoginActivity.this, R.string.error_incorrect_login_data,
+                Toast.LENGTH_LONG).show();
     }
 }
