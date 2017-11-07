@@ -14,7 +14,6 @@ import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.DashboardListAdapter;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
-import com.mojapl.mobile_app.main.models.DashboardListItem;
 import com.mojapl.mobile_app.main.models.Event;
 
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     Connector connectionConfig;
     private ProgressDialog dialog;
     private RecyclerView mRecyclerView;
+    DashboardListAdapter adapter;
 
     int SPAN_COUNT = 1;
 
@@ -39,33 +39,22 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), SPAN_COUNT));
 
-        List<DashboardListItem> items = new ArrayList<>();
-
-        items.add(new DashboardListItem(R.drawable.image_logo_transparent, "Test", "CONTENT"));
-        items.add(new DashboardListItem(R.drawable.image_logo_transparent, "Test", "CONTENT"));
-        items.add(new DashboardListItem(R.drawable.image_logo_transparent, "Test", "CONTENT"));
-        items.add(new DashboardListItem(R.drawable.image_logo_transparent, "Test", "CONTENT"));
-
-        DashboardListAdapter adapter = new DashboardListAdapter();
-        adapter.setItems(items);
+        adapter = new DashboardListAdapter(getContext(), new ArrayList<Event>(0));
 
         mRecyclerView.setAdapter(adapter);
         ButterKnife.bind(this, view);
+
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Loading..");
+        dialog.show();
+
+        connectionConfig.getEvents(this);
         return view;
     }
 
-//    @OnClick(R.id.button)
-//    public void getElem(){
-//        dialog = new ProgressDialog(getActivity());
-//        dialog.setMessage("Loading..");
-//        dialog.show();
-//        connectionConfig.getEvents(this);
-//
-//    }
-
     @Override
     public void serviceSuccess(List<Event> events) {
-        Log.d("SUCCESS", events.get(0).toString());
+        adapter.updateList(events);
         dialog.hide();
     }
 

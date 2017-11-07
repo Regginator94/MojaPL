@@ -1,16 +1,32 @@
 package com.mojapl.mobile_app.main.models;
 
-/**
- * Created by Klaudia on 23.10.2017.
- */
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Event {
+
     private int id;
+    private int organisationId;
+    private int categoryId;
+
+    @SerializedName("content")
+    @Expose
+    private String content;
+
+    @SerializedName("title")
+    @Expose
     private String title;
-    private  String data;
-    private String preview;
-    private String image;
-    private String href;
+
+    private String imageUrl;
+    private String date;
+    private String url;
+    private boolean fbPost;
+
+    public Event(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     public Event() {
     }
@@ -19,29 +35,51 @@ public class Event {
         return id;
     }
 
+    public int getOrganisationId() {
+        return organisationId;
+    }
 
-    @Override
-    public String toString() {
-        return "id: " + id + " name: " + preview;
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getData() {
-        return data;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public String getHref() {
-        return href;
+    public String getDate() {
+        return date;
     }
 
-    public String getImage() {
-        return image;
+    public String getUrl() {
+        return url;
     }
 
-    public  String getPreview(){
-        return preview;
+    public boolean isFbPost() {
+        return fbPost;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", organisationId=" + organisationId +
+                ", categoryId=" + categoryId +
+                ", content='" + content + '\'' +
+                ", title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", date='" + date + '\'' +
+                ", url='" + url + '\'' +
+                ", fbPost=" + fbPost +
+                '}';
     }
 }
