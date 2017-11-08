@@ -6,26 +6,38 @@ import com.google.gson.annotations.SerializedName;
 
 public class Event {
 
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("organisationId")
+    @Expose
     private int organisationId;
+    @SerializedName("categoryId")
+    @Expose
     private int categoryId;
-
     @SerializedName("content")
     @Expose
     private String content;
-
     @SerializedName("title")
     @Expose
     private String title;
-
+    @SerializedName("imageUrl")
+    @Expose
     private String imageUrl;
+    @SerializedName("date")
+    @Expose
     private String date;
+    @SerializedName("url")
+    @Expose
     private String url;
+    @SerializedName("fbPost")
+    @Expose
     private boolean fbPost;
 
-    public Event(String title, String content) {
+    public Event(String title, String content, String date) {
         this.title = title;
         this.content = content;
+        this.date = date;
     }
 
     public Event() {

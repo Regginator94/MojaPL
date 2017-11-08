@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.models.Event;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,9 +45,15 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.title.setText(mEventList.get(position).getTitle());
-//        holder.image.setImageResource(mEventList.get(position).getResource());
         holder.content.setText(mEventList.get(position).getContent());
-//        holder.imageExpanded.setImageResource(mEventList.get(position).getResourceExpanded());
+        holder.date.setText(mEventList.get(position).getDate());
+
+        if(mEventList.get(position).isFbPost()) {
+            holder.image.setImageResource(R.drawable.fb_logo);
+        } else {
+            Picasso.with(mContext).load(mEventList.get(position).getImageUrl()).into(holder.image);
+        }
+
 
         if (position == expandedPosition && isCollapsed) {
             holder.expandedView.setVisibility(View.VISIBLE);
@@ -84,7 +91,8 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        //        public ImageView image;
+        public ImageView image;
+        public TextView date;
         public LinearLayout expandedView;
         public TextView content;
         public ImageView imageExpanded;
@@ -92,9 +100,10 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
-//            image = (ImageView) itemView.findViewById(R.id.image_view);
+            image = (ImageView) itemView.findViewById(R.id.image_view);
             expandedView = (LinearLayout) itemView.findViewById(R.id.expandView);
             content = (TextView) itemView.findViewById(R.id.content);
+            date = (TextView) itemView.findViewById(R.id.date);
 //            imageExpanded = (ImageView) itemView.findViewById(R.id.image_expanded);
         }
 
