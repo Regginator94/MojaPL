@@ -43,7 +43,7 @@ exports.insertPLNews = function(postsList) {
 	console.log('POSTS ADDED TO DB');
 }
 
-exports.getNews = function(response, lastLoginDate){	
+exports.getNews = function(response){	
 	lastLoginDate = '2012-12-25 00:00:00';
 	var eventDBList = [];
 	var query ="SELECT E_ID, E_O_ID, E_C_ID, E_TEXT, E_TITLE, E_IMAGE_URL, E_CREATE_DATE, E_URL, E_FB_POST FROM events WHERE E_CREATE_DATE >='"+lastLoginDate+"'";
@@ -62,6 +62,7 @@ exports.getNews = function(response, lastLoginDate){
 	        response.end(); 	
 	    }
 	  });
+	
 }
 
 exports.addUser = function(response, email, password){
