@@ -19,7 +19,6 @@ exports.getData = function(response) {
             response.write(JSON.stringify(responseBody));
             response.end();
         });
-
        } else {
             response.statusCode = res.statusCode;
             response.setHeader('Content-Type', 'application/json');
