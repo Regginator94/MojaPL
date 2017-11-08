@@ -13,7 +13,7 @@ const DBConnection = require('./downloaders/DBConnection');
 app.set('port', (process.env.PORT || 5000));
 
 app.get('/', function(request, response) {
-  response.end('Welcome API page - to configure\n');
+  response.send('Welcome API page - to configure\n');
 });
 
 app.get('/api/events', function(request, response){
