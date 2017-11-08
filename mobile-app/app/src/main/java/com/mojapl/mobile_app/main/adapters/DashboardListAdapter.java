@@ -48,23 +48,33 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.title.setText(mEventList.get(position).getTitle());
-        holder.content.setText(mEventList.get(position).getContent());
+
         holder.date.setText(mEventList.get(position).getDate());
-        String html = "<a href=\""+mEventList.get(position)+"\">LINK</a>";
+//        String html = "<a href=\""+mEventList.get(position).getUrl()+"\">LINK</a>";
+        String html = "Link do źródła: " + mEventList.get(position).getUrl();
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
         } else {
             result = Html.fromHtml(html);
         }
-        Log.i("LINK", html.toString());
-        holder.href.setText(result);
+        Log.i("LINK", html);
+        holder.href.setClickable(true);
+        holder.href.setText(html);
         holder.href.setMovementMethod(LinkMovementMethod.getInstance());
-        if(mEventList.get(position).isFbPost()) {
+        if (mEventList.get(position).isFbPost()) {
             holder.image.setImageResource(R.drawable.fb_logo);
+            String content = mEventList.get(position).getContent();
+            if (content.length() > 21) {
+                holder.title.setText(content.substring(0, 20) + " (...)");
+            } else {
+                holder.title.setText(content);
+            }
+            holder.content.setText(mEventList.get(position).getContent());
         } else {
             Picasso.with(mContext).load(mEventList.get(position).getImageUrl()).into(holder.image);
+            holder.title.setText(mEventList.get(position).getTitle());
+            holder.content.setText(mEventList.get(position).getContent());
         }
 
 
