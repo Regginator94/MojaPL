@@ -3,7 +3,9 @@ package com.mojapl.mobile_app.main.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import io.realm.RealmObject;
+
+public class User extends RealmObject {
 
     @SerializedName("email")
     @Expose
@@ -16,6 +18,9 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User() {
     }
 
     public String getEmail() {

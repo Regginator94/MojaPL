@@ -4,8 +4,10 @@ package com.mojapl.mobile_app.main.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Event {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Event extends RealmObject {
     @SerializedName("id")
     @Expose
     private int id;
@@ -93,5 +95,36 @@ public class Event {
                 ", url='" + url + '\'' +
                 ", fbPost=" + fbPost +
                 '}';
+    }
+
+    public void setFbPost(boolean fbPost) {
+        this.fbPost = fbPost;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setOrganisationId(int organisationId) {
+        this.organisationId = organisationId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setContent(String string) {
+        this.content = content;
     }
 }

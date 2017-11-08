@@ -9,12 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.DashboardListAdapter;
 import com.mojapl.mobile_app.main.connection.Connector;
+import com.mojapl.mobile_app.main.listeners.OnDashboardItemClickListener;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
 import com.mojapl.mobile_app.main.models.Event;
+import com.mojapl.mobile_app.main.realm.EventRepository;
+import com.mojapl.mobile_app.main.realm.IEventRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +26,14 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 
-public class DashboardListFragment extends Fragment implements ServerRequestListener {
+public class DashboardListFragment extends Fragment implements ServerRequestListener, IEventsCallbeck {
     Connector connectionConfig;
     private ProgressDialog dialog;
     private RecyclerView mRecyclerView;
     DashboardListAdapter adapter;
+    private IEventRepository eventRepository = new EventRepository();
+    private IEventRepository.onSaveEventCallback onSaveEventCallback;
+    private List<Event> events;
 
     int SPAN_COUNT = 1;
 
@@ -47,6 +54,7 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Loading..");
         dialog.show();
+        subscribeCallbacks();
 
         connectionConfig.getEvents(this);
         return view;
@@ -54,7 +62,14 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
 
     @Override
     public void serviceSuccess(List<Event> events) {
-        adapter.updateList(events);
+        this.events = events;
+        adapter.updateList(this.events);
+
+        for (int i = 0; i < events.size(); i++) {
+            eventRepository.addEvents(events.get(i), onSaveEventCallback);
+
+        }
+
         dialog.hide();
     }
 
@@ -63,4 +78,20 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         Log.e("ERROR", e.toString());
         dialog.hide();
     }
+
+    @Override
+    public void subscribeCallbacks() {
+        onSaveEventCallback = new IEventRepository.onSaveEventCallback() {
+            @Override
+            public void onSuccess() {
+                Log.i("REALM", "success adding new events");
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.i("REALM", "error adding new events");
+            }
+        };
+    }
+
 }

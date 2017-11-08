@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.ViewPagerAdapter;
+import com.mojapl.mobile_app.main.realm.SimpleRealmModule;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -19,11 +20,17 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPager mviewPager;
     ViewPagerAdapter mViewPagerAdapter;
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initRealmDb();
+        instance = this;
         setContentView(R.layout.activity_main);
         mviewPager = (ViewPager) findViewById(R.id.pager);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -32,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRealmDb() {
         Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm.realm").build();
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
     }
 

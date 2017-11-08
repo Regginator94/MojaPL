@@ -2,6 +2,10 @@ package com.mojapl.mobile_app.main.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +51,16 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         holder.title.setText(mEventList.get(position).getTitle());
         holder.content.setText(mEventList.get(position).getContent());
         holder.date.setText(mEventList.get(position).getDate());
-
+        String html = "<a href=\""+mEventList.get(position)+"\">LINK</a>";
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        Log.i("LINK", html.toString());
+        holder.href.setText(result);
+        holder.href.setMovementMethod(LinkMovementMethod.getInstance());
         if(mEventList.get(position).isFbPost()) {
             holder.image.setImageResource(R.drawable.fb_logo);
         } else {
@@ -96,6 +109,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         public LinearLayout expandedView;
         public TextView content;
         public ImageView imageExpanded;
+        public TextView href;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -104,6 +118,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             expandedView = (LinearLayout) itemView.findViewById(R.id.expandView);
             content = (TextView) itemView.findViewById(R.id.content);
             date = (TextView) itemView.findViewById(R.id.date);
+            href = (TextView) itemView.findViewById(R.id.html);
 //            imageExpanded = (ImageView) itemView.findViewById(R.id.image_expanded);
         }
 
