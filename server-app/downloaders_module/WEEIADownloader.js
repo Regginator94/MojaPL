@@ -2,7 +2,7 @@ const request = require('tinyreq');
 const cheerio = require('cheerio')
 const mainPageURL = 'https://www.p.lodz.pl';
 
-var WeeiaItem = require('./objects/WeeiaItem');
+var WeeiaItem = require('./../objects/WeeiaItem');
 
 exports.getData = function() {
     var pageBody = '';
