@@ -3,7 +3,7 @@ const UserModel = require('./../objects/UserModel');
 var secretKey = 'adssad1';
 
 exports.userLogin = function(connection, response, email, password) {
-	var query = 'SELECT * FROM users WHERE U_EMAIL = ? AND U_PASSWORD = ?'; //"SELECT EXISTS(SELECT * FROM users WHERE U_EMAIL LIKE '"+email+"' AND U_PASSWORD LIKE '"+password+"')";
+	var query = 'SELECT * FROM users WHERE U_EMAIL = ? AND U_PASSWORD = ?'; 
 	connection.query(query, [email, password],function (err, result, fields){
 	    if (err){
 	    	throw err;
@@ -11,17 +11,22 @@ exports.userLogin = function(connection, response, email, password) {
 	    else{
 	    	if(userLoginDataCorrect(result)){
 	    	 var token = jwt.sign(JSON.parse(JSON.stringify(result[0])),secretKey,{
-                    expiresIn:60
+                    expiresIn:604800
                 });
+	    	 	response.status(200);
                 response.json({
                     status:true,
                     token:token
                 })	
+                console.log('User correct login, email :'+email);
 	    	} 
 	    	else {
-	    		response.setHeader('Content-Type', 'application/json');
-	   	 		response.write(JSON.stringify("Incorrect login data"));
-		    	response.end();
+	    		console.log('User incorrect login, email :'+email);
+	    		response.status(403);
+                response.json({
+                    status:false,
+                    message:'Incorrect login data'
+                })
 	    	}
 	    }
    	});
@@ -31,14 +36,28 @@ exports.userLoginToken = function(response, token) {
 	if(token){
         jwt.verify(token,secretKey,function(err,ress){
             if(err){
-                response.status(500).send('Token Invalid');
+                response.status(403);
+                response.json({
+                    status:false,
+                    message:'Token invalid'
+                })
+                //console.log('User incorrect token login, email :'+email);
             }else{
-            	var decoded = jwt.verify(token, secretKey);
-				response.status(500).send('Token Valid');
+            	response.status(200);
+                response.json({
+                    status:true,
+                    message:'Valid token. Logged'
+                })	
+                //console.log('User correct token login, email :'+email);
             }
         })
     }else{
-        response.send('Please send a token')
+       response.status(511);
+        response.json({
+            status:false,
+            message:'Token is required'
+        })	
+        //console.log('User incorrect token login, email :'+email);
     }
 }
 
@@ -46,13 +65,27 @@ function authenticateUser(response, token){
 	if(token){
         jwt.verify(token,secretKey,function(err,ress){
             if(err){
-                response.status(500).send('Token Invalid');
+                response.status(403);
+                response.json({
+                    status:false,
+                    message:'Token invalid'
+                })
+                //console.log('User token authentication invalid, email :'+email);
             }else{
-            	 response.status(500).send('Token Valid');
+            	response.status(200);
+                response.json({
+                    status:true,
+                    message:'Token valid'
+                })
+                //console.log('User token authentication valid, email :'+email);
             }
         })
     }else{
-        response.send('Please send a token')
+    	response.status(511);
+        response.json({
+            status:false,
+            message:'Token is required'
+        })	
     }
 }
 

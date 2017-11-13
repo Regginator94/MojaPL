@@ -10,6 +10,12 @@ exports.getNews = function(connection, response){
 
 	connection.query(query, function (err, result, fields) {
 	    if (err){
+	    	response.status(503);
+	    	response.json({
+                    status:503,
+                    message:'Data base error'
+                });
+	    	console.log(err);
 	    	throw err;
 	    } 
 	    else{
@@ -19,9 +25,8 @@ exports.getNews = function(connection, response){
 	    			row.E_TEXT, row.E_TITLE, row.E_IMAGE_URL, row.E_CREATE_DATE, row.E_URL, row.E_FB_POST, row.O_NAME);
 	    		eventDBList.push(eventDB);
 	    	}
-	        response.setHeader('Content-Type', 'application/json');
-	        response.write(JSON.stringify(eventDBList));
-	        response.end(); 	
+	    	response.status(200);
+	    	response.json(eventDBList)	
 	    }
 	  });
 }

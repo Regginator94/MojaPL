@@ -7,6 +7,12 @@ exports.addUser = function(connection, response, email, password){
 	connection.query(query, function (err, result, fields) {
 	    if (err){
 	    	throw err;
+	    	console.log('Incorrect registration, email :'+email);
+    		response.status(500);
+            response.json({
+                status:false,
+                message:'Server error'
+            })
 	    } 
 	    else{
 	    	if(!userExists(result)) {
@@ -14,17 +20,28 @@ exports.addUser = function(connection, response, email, password){
 	    		connection.query(query, function (err, result, fields) {
 	    			if (err){
 				    	throw err;
+				    	console.log('Incorrect registration, email :'+email);
+			    		response.status(500);
+			            response.json({
+			                status:false,
+			                message:'Server error'
+			            })
 				    } 
 				    else {
-    		    		response.setHeader('Content-Type', 'application/json');
-			   	 		response.write(JSON.stringify(userToken));
-				    	response.end();
+    		    		response.status(200);
+		                response.json({
+		                    status:true,
+		                    token:token
+		                })	
 				    }
 	    		});
 	    	} else {
-	    		response.setHeader('Content-Type', 'application/json');
-	   	 		response.write(JSON.stringify("User already exists"));
-		    	response.end();
+		    	console.log('Incorrect registration, email :'+email);
+	    		response.status(403);
+                response.json({
+                    status:false,
+                    message:'User already exists'
+                })
 	    	}
 	    }
    	});

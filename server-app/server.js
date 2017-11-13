@@ -22,7 +22,8 @@ app.get('/api/events', function(request, response){
 
 //wymagany parametr date=2012-12-25 00:00:00
 app.get('/data', function(request, response) {
-	DBConnection.getNews(response);
+		console.log(JSON.stringify(request.headers));
+	DBConnection.getNews(response, request.headers.token);
 });
 
 app.post('/createUser', function(request, response){
