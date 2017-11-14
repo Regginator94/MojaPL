@@ -1,34 +1,42 @@
 var jwt = require('jsonwebtoken');
-const UserModel = require('./../objects/UserModel');
 var secretKey = 'adssad1';
 
 exports.userLogin = function(connection, response, email, password) {
 	var query = 'SELECT * FROM users WHERE U_EMAIL = ? AND U_PASSWORD = ?'; 
 	connection.query(query, [email, password],function (err, result, fields){
-	    if (err){
-	    	throw err;
-	    } 
-	    else{
-	    	if(userLoginDataCorrect(result)){
-	    	 var token = jwt.sign(JSON.parse(JSON.stringify(result[0])),secretKey,{
-                    expiresIn:604800
-                });
-	    	 	response.status(200);
-                response.json({
-                    status:true,
-                    token:token
-                })	
-                console.log('User correct login, email :'+email);
-	    	} 
-	    	else {
-	    		console.log('User incorrect login, email :'+email);
-	    		response.status(403);
+       if(result.length > 2){
+            if (err){
+                throw err;
+            } 
+            else{
+                if(userLoginDataCorrect(result)){
+                 var token = jwt.sign(JSON.parse(JSON.stringify(result[0])),secretKey,{
+                        expiresIn:604800
+                    });
+                    response.status(200);
+                    response.json({
+                        status:true,
+                        token:token
+                    })  
+                    console.log('User correct login, email :'+email);
+                } 
+                else {
+                    console.log('User incorrect login, email :'+email);
+                    response.status(403);
+                    response.json({
+                        status:false,
+                        message:'Incorrect login data'
+                    })
+                }
+            } 
+    } else {
+            response.status(403);
                 response.json({
                     status:false,
-                    message:'Incorrect login data'
+                    message:'Invalid user data.'
                 })
-	    	}
-	    }
+        }
+
    	});
 }
 

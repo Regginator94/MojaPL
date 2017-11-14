@@ -1,17 +1,25 @@
 var mysql      = require('mysql');
-var jwt=require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 const NewsInserts = require('./NewsInserts');
 const NewsGetters = require('./NewsGetters');
 const UserLoginMethods = require('./UserLoginMethods');
 const UserRegistration = require('./UserRegistration');
+const UserModel = require('./../objects/UserModel');
 
 var secretKey = 'adssad1';
 
+// var connection = mysql.createConnection({
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : 'root',
+//   database : 'mojapl_db',
+// });
+
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'mojapl_db',
+  host     : 'us-cdbr-iron-east-05.cleardb.net',
+  user     : 'bf038d7d725ad7',
+  password : '0dfef14d',
+  database : 'heroku_cd344eaef5f5056',
 });
 
 setInterval(function () {
@@ -34,18 +42,68 @@ exports.getData = function() {
 	});
 }
 
-exports.insertFBPosts = function(postsList) {
-	NewsInserts.insertFBPosts(connection, postsList);
+exports.insertFBPosts = function(postsList, organisationId, categoryId) {
+	NewsInserts.insertFBPosts(connection, postsList, organisationId, categoryId);
 }
 
 exports.insertPLNews = function(postsList) {
 	NewsInserts.insertPLNews(connection, postsList);
 }
 
-exports.getNews = function(response, token) {	
-	//if(authenticateUser(response, token)){
-		NewsGetters.getNews(connection, response);
-	//}
+exports.getNews = function(response, token, filters) {  
+  //decodeUserFromToken(token);
+  if(authenticateUser(response, token)){
+    NewsGetters.getNewsByOrganisationFilter(connection, response, filters);
+  } else{
+       response.status(511);
+        response.json({
+            status:false,
+            message:'Token is required'
+        })  
+        //console.log('User incorrect token login, email :'+email);
+    }
+}
+
+exports.getNewsFiltered = function(response, token, categoryId, organizationsId) {  
+  //decodeUserFromToken(token);
+  if(authenticateUser(response, token)){
+    NewsGetters.getNewsFiltered(connection, response, categoryId, organizationsId);
+  } else{
+       response.status(511);
+        response.json({
+            status:false,
+            message:'Token is required'
+        })  
+        //console.log('User incorrect token login, email :'+email);
+    }
+}
+
+exports.getNewsByOrganisationFilter = function(response, token, organisations) {  
+  //decodeUserFromToken(token);
+  if(authenticateUser(response, token)){
+    NewsGetters.getNewsByOrganisationFilter(connection, response, organisations);
+  } else{
+       response.status(511);
+        response.json({
+            status:false,
+            message:'Token is required'
+        })  
+        //console.log('User incorrect token login, email :'+email);
+    }
+}
+
+exports.getNewsByCategoryFilter = function(response, token, filters) {	
+  //decodeUserFromToken(token);
+	if(authenticateUser(response, token)){
+		NewsGetters.getNewsByCategoryFilter(connection, response, filters);
+	} else{
+       response.status(511);
+        response.json({
+            status:false,
+            message:'Token is required'
+        })  
+        //console.log('User incorrect token login, email :'+email);
+    }
 }
 
 exports.addUser = function(response, email, password){
@@ -60,24 +118,13 @@ exports.userLoginToken = function(response, token) {
 	UserLoginMethods.userLoginToken(response, token);
 }
 
-
 function authenticateUser(response, token){
-		if(token){
-        jwt.verify(token,secretKey,function(err,ress){
+	if(token){
+        return jwt.verify(token,secretKey,function(err,ress){
             if(err){
-                response.status(403);
-                response.json({
-                    status:false,
-                    message:'Token invalid'
-                })
-                //console.log('User incorrect token login, email :'+email);
-            }else{
-            	response.status(200);
-                response.json({
-                    status:true,
-                    message:'Valid token. Logged'
-                })	
-                //console.log('User correct token login, email :'+email);
+				return false;
+            } else{
+            	return true;
             }
         })
     }else{
@@ -89,3 +136,8 @@ function authenticateUser(response, token){
         //console.log('User incorrect token login, email :'+email);
     }
 }
+
+// function decodeUserFromToken(token){
+//   decoded = jwt.verify(token, secretKey);
+//   console.log(decoded);
+// }

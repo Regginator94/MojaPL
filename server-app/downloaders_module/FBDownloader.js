@@ -6,7 +6,7 @@ const fbHome = 'https://www.facebook.com/';
 const FBItem = require('./../objects/FBItem');
 const DBConnection = require('./../database_module/DBConnection');
 
-exports.getData = function(pageId) {
+exports.getData = function(pageId, organisationId, categoryId) {
 	https.get(fbUrl+pageId+fbToken, (res) => {	  
 	  let JSONResponse = [];
 	  res.on('data', (d) => {
@@ -21,8 +21,7 @@ exports.getData = function(pageId) {
  				post = new FBItem(post.created_time, post.message, post.id, postUrl, pageId);
  				PostList.push(post);
  			}
- 			console.log("Pobrano, bez dodawania do DB");
- 			//DBConnection.insertFBPosts(PostList);
+ 			DBConnection.insertFBPosts(PostList, organisationId, categoryId);
         });
 	}).on('error', (e) => {
 	  console.error(e);

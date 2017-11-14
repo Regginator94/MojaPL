@@ -1,16 +1,18 @@
 var emojiStrip = require('emoji-strip')
 
-exports.insertFBPosts = function(connection, postsList) {
+exports.insertFBPosts = function(connection, postsList, organisationId, categoryId) {
 		for(var i = 0; i < postsList.length; i++) {
 			var post = postsList[i];
+			if(post.message){
 			  connection.query('INSERT INTO events (E_O_ID, E_C_ID, E_TEXT, E_CREATE_DATE, E_URL, E_FB_POST, E_FB_ID) '+
-				 'VALUES ('+1+','+1+',"'+emojiStrip(post.message.replace(/\"/g, ""))+'","'+post.createdTime+'","'+post.postUrl+'",'+true+',"'+post.id+'")', function(err){
+				 'VALUES ('+organisationId+','+categoryId+',"'+emojiStrip(post.message.replace(/\"/g, ""))+'","'+post.createdTime+'","'+post.postUrl+'",'+true+',"'+post.id+'")', function(err){
 			        if(err) {
-			        	console.log('Error during db insert query.On postId : '+post.id);
+			        	//console.log('Error during db insert query.On postId : '+post.id);
 			        }
-		});
-		console.log('POSTS ADDED TO DB');
+				});
+		}
 	}
+	console.log('NEWS FOR ORGANISTATION (ID='+organisationId+') UPDATED');
 }	
 
 
@@ -24,5 +26,5 @@ exports.insertPLNews = function(connection, postsList) {
 		        }
 		});
 	}
-	console.log('POSTS ADDED TO DB');
+	console.log('NEWS FOR ORGANISTATION pl.lodz.pl UPDATED');
 }

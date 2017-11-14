@@ -16,7 +16,7 @@ exports.addUser = function(connection, response, email, password){
 	    } 
 	    else{
 	    	if(!userExists(result)) {
-	    		query = 'INSERT INTO users (U_EMAIL, U_PASSWORD, U_CREATE_DATE, U_TOKEN)  VALUES ("'+email+'", "'+password+'", NOW() ,"'+userToken+'")';
+	    		query = 'INSERT INTO users (U_EMAIL, U_PASSWORD, U_CREATE_DATE)  VALUES ("'+email+'", "'+password+'", NOW())';
 	    		connection.query(query, function (err, result, fields) {
 	    			if (err){
 				    	throw err;
@@ -31,7 +31,7 @@ exports.addUser = function(connection, response, email, password){
     		    		response.status(200);
 		                response.json({
 		                    status:true,
-		                    token:token
+		                    message:'User created'
 		                })	
 				    }
 	    		});
