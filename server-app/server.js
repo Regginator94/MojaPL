@@ -1,6 +1,5 @@
 var express = require('express'),
 	app = express();
-
 var http = require('http').createServer(app);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -13,7 +12,7 @@ const DBConnection = require('./database_module/DBConnection');
 
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/', function(request, response) {
+app.get('/description', function(request, response) {
   response.sendFile(__dirname+'/index.html');
 });
 
@@ -63,6 +62,6 @@ http.listen(app.get('port'), function() {
 	 FBDownloader.getData('weeia',2,1);
  	 FBDownloader.getData('klubfuturysta',201,2);
  	 FBDownloader.getData('studentradiozak',301,3);
- 	// FBDownloader.getData('Cotton-Club-Łódź-193621223991274',401,4);
+ 	//// FBDownloader.getData('Cotton-Club-Łódź-193621223991274',401,4);
 	 PLDownloader.getData();
 });

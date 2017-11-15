@@ -4,7 +4,7 @@ var secretKey = 'adssad1';
 exports.userLogin = function(connection, response, email, password) {
 	var query = 'SELECT * FROM users WHERE U_EMAIL = ? AND U_PASSWORD = ?'; 
 	connection.query(query, [email, password],function (err, result, fields){
-       if(result.length > 2){
+       if(result.length > 0){
             if (err){
                 throw err;
             } 

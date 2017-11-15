@@ -19,7 +19,7 @@ exports.getNews = function(connection, response, filters){
 	    	throw err;
 	    } 
 	    else{
-	    	if(result.length > 5){
+	    	if(result.length > 0){
 	    		for(var i = 0; i < result.length; i++){
 		    		var row = result[i];
 		    		var eventDB = new EventDBItem(row.E_ID, row.E_O_ID, row.E_C_ID, 
@@ -58,7 +58,7 @@ exports.getNewsFiltered = function(connection, response,  categoryId, organizati
 	    	throw err;
 	    } 
 	    else{
-	    	if(result.length > 5){
+	    	if(result.length > 0){
 	    		for(var i = 0; i < result.length; i++){
 		    		var row = result[i];
 		    		var eventDB = new EventDBItem(row.E_ID, row.E_O_ID, row.E_C_ID, 
@@ -97,7 +97,7 @@ exports.getNewsByCategoryFilter = function(connection, response, filters){
 	    	throw err;
 	    } 
 	    else{
-	    	if(result.length > 5){
+	    	if(result.length > 1){
 	    		for(var i = 0; i < result.length; i++){
 		    		var row = result[i];
 		    		var eventDB = new EventDBItem(row.E_ID, row.E_O_ID, row.E_C_ID, 
@@ -135,7 +135,7 @@ exports.getNewsByOrganisationFilter = function(connection, response, organisatio
 	    	throw err;
 	    } 
 	    else{
-	    	if(result.length > 5){
+	    	if(result.length > 0){
 	    		for(var i = 0; i < result.length; i++){
 		    		var row = result[i];
 		    		var eventDB = new EventDBItem(row.E_ID, row.E_O_ID, row.E_C_ID, 
