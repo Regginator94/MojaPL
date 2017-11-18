@@ -9,6 +9,8 @@ import android.os.Handler;
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
 public class SplashScreenActivity extends Activity implements UserRequestListener {
@@ -21,19 +23,17 @@ public class SplashScreenActivity extends Activity implements UserRequestListene
         setContentView(R.layout.activity_splash_screen);
 
         SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);
-        String email = preferences.getString("email", null);
-        String password = preferences.getString("password", null);
+        String token = preferences.getString("token", null);
 
-        if (email != null && password != null) {
-            User user = new User(email, password);
+        if (token != null) {
             Connector connector = Connector.getInstance();
-            connector.loginUser(this, user);
+            connector.loginUser(this, token, new User());
         } else {
             new Handler().postDelayed(new Runnable(){
                 @Override
                 public void run() {
-                    Intent mainIntent = new Intent(SplashScreenActivity.this,LoginActivity.class);
-                    SplashScreenActivity.this.startActivity(mainIntent);
+                    Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    SplashScreenActivity.this.startActivity(intent);
                     SplashScreenActivity.this.finish();
                 }
             }, SPLASH_DISPLAY_LENGTH);
@@ -41,12 +41,16 @@ public class SplashScreenActivity extends Activity implements UserRequestListene
     }
 
     @Override
-    public void serviceSuccess(String message) {
+    public void serviceSuccess(RegistrationStatusResponse response) {
+    }
+
+    @Override
+    public void serviceSuccess(LoginStatusResponse response) {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreenActivity.this,MainActivity.class);
-                SplashScreenActivity.this.startActivity(mainIntent);
+                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                SplashScreenActivity.this.startActivity(intent);
                 SplashScreenActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
@@ -57,8 +61,8 @@ public class SplashScreenActivity extends Activity implements UserRequestListene
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreenActivity.this,LoginActivity.class);
-                SplashScreenActivity.this.startActivity(mainIntent);
+                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                SplashScreenActivity.this.startActivity(intent);
                 SplashScreenActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);

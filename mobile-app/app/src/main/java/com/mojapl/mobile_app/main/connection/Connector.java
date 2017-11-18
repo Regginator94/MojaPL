@@ -7,9 +7,7 @@ import com.mojapl.mobile_app.main.models.User;
 import com.mojapl.mobile_app.main.services.EventsService;
 import com.mojapl.mobile_app.main.services.UserService;
 
-
 import okhttp3.OkHttpClient;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -54,9 +52,9 @@ public class Connector {
         userService.saveUser(user);
     }
 
-    public void loginUser(UserRequestListener userRequestListener, User user) {
+    public void loginUser(UserRequestListener userRequestListener, String token, User user) {
         UserService userService = new UserService(userRequestListener);
-        userService.findUser(user);
+        userService.findUser(token, user);
     }
 
     public Retrofit getRetrofit() {

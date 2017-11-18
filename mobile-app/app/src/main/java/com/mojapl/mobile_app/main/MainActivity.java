@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.ViewPagerAdapter;
-import com.mojapl.mobile_app.main.realm.SimpleRealmModule;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

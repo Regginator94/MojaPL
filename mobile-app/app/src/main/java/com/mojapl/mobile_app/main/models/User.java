@@ -1,23 +1,24 @@
 package com.mojapl.mobile_app.main.models;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 
 public class User extends RealmObject {
 
-    @SerializedName("email")
     @Expose
     private String email;
 
-    @SerializedName("password")
     @Expose
     private String password;
 
-    public User(String email, String password) {
+    @Expose
+    private Long facultyId;
+
+    public User(String email, String password, Long facultyId) {
         this.email = email;
         this.password = password;
+        this.facultyId = facultyId;
     }
 
     public User() {
@@ -37,5 +38,13 @@ public class User extends RealmObject {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(Long facultyId) {
+        this.facultyId = facultyId;
     }
 }

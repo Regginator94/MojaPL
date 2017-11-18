@@ -6,6 +6,8 @@ import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.connection.IClientHTTP;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
 import retrofit2.Call;
@@ -27,20 +29,24 @@ public class UserService {
     public void saveUser(User user){
         IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
 
-        Call<String> call = client.createUser(user);
-        call.enqueue(new Callback<String>() {
+        Call<RegistrationStatusResponse> call = client.createUser(user);
+        call.enqueue(new Callback<RegistrationStatusResponse>() {
 
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if(Config.DEBUG){
+            public void onResponse(Call<RegistrationStatusResponse> call, Response<RegistrationStatusResponse> response) {
+                if (response.body() == null) {
+                    userRequestListener.serviceFailure(new Exception());
+                    return;
+                }
+                if (Config.DEBUG){
                     Log.d(TAG, call.toString());
                     Log.d(TAG, response.body().toString());
                 }
-                userRequestListener.serviceSuccess(response.body().toString());
+                userRequestListener.serviceSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<RegistrationStatusResponse> call, Throwable t) {
                 if(Config.DEBUG){
                     Log.e(TAG+" error", t.toString());
                 }
@@ -49,31 +55,30 @@ public class UserService {
         });
     }
 
-    public void findUser(User user){
+    public void findUser(String token, User user){
         IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
 
-        Call<String> call = client.loginUser(user);
-        call.enqueue(new Callback<String>() {
+        Call<LoginStatusResponse> call = client.loginUser(token, user);
+        call.enqueue(new Callback<LoginStatusResponse>() {
 
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                // TODO: json from server should contain status code -> make adjusted message based on it
-                String responseBody = response.body();
+            public void onResponse(Call<LoginStatusResponse> call, Response<LoginStatusResponse> response) {
+                LoginStatusResponse responseBody = response.body();
                 if (responseBody == null) {
                     userRequestListener.serviceFailure(new Exception());
                     return;
                 }
-                if(Config.DEBUG){
+                if (Config.DEBUG){
                     Log.d(TAG, call.toString());
                     Log.d(TAG, responseBody.toString());
                 }
-                userRequestListener.serviceSuccess(responseBody.toString());
+                userRequestListener.serviceSuccess(responseBody);
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                if(Config.DEBUG){
-                    Log.e(TAG+" error", t.toString());
+            public void onFailure(Call<LoginStatusResponse> call, Throwable t) {
+                if (Config.DEBUG) {
+                    Log.e(TAG + " error", t.toString());
                 }
                 userRequestListener.serviceFailure(new Exception());
             }

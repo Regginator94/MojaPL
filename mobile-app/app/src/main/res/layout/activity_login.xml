@@ -36,6 +36,8 @@
             android:inputType="textEmailAddress"
             android:textColor="@android:color/white"
             android:backgroundTint="@android:color/white"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:maxLines="1" />
 
     </LinearLayout>
@@ -61,6 +63,8 @@
             android:inputType="textPassword"
             android:textColor="@android:color/white"
             android:backgroundTint="@android:color/white"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:maxLines="1" />
 
     </LinearLayout>

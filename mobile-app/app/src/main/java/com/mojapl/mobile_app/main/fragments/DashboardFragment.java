@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
-import com.mojapl.mobile_app.main.listeners.OnDashboardItemClickListener;
 import com.mojapl.mobile_app.main.adapters.DashboardAdapter;
+import com.mojapl.mobile_app.main.listeners.OnDashboardItemClickListener;
 import com.mojapl.mobile_app.main.models.DashboardItem;
 
 import java.util.ArrayList;

@@ -17,4 +17,5 @@
     <string name="message_registration_successful">Rejestracja zakończona pomyślnie!</string>
     <string name="error_registration_failed">Błąd podczas rejestracji!</string>
     <string name="label_logout">Wyloguj</string>
+    <string name="error_user_already_exists">Użytkownik o takiej nazwie już istnieje!</string>
 </resources>

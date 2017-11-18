@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:paddingLeft="48dp"
-    android:paddingRight="48dp"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
     android:background="@color/colorRedDark">
 
     <ImageView android:id="@+id/image_logo_transparent"
@@ -34,6 +34,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:inputType="textEmailAddress"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:hint="Email"
             android:textColor="@android:color/white"
             android:backgroundTint="@android:color/white"
@@ -61,6 +63,8 @@
             android:fontFamily="sans-serif"
             android:inputType="textPassword"
             android:hint="Hasło"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:textColor="@android:color/white"
             android:backgroundTint="@android:color/white"
             android:maxLines="1" />
@@ -69,8 +73,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/icon_password_repeat"
@@ -88,11 +91,23 @@
             android:fontFamily="sans-serif"
             android:inputType="textPassword"
             android:hint="Potwierdź hasło"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:textColor="@android:color/white"
             android:backgroundTint="@android:color/white"
             android:maxLines="1" />
 
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:minHeight="36dp"
+        android:spinnerMode="dialog"/>
 
     <Button
         android:id="@+id/button_sign_up"

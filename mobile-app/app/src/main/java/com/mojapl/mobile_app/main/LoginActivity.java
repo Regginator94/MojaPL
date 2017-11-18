@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
 public class LoginActivity extends Activity implements UserRequestListener {
@@ -39,13 +41,13 @@ public class LoginActivity extends Activity implements UserRequestListener {
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-                user = new User(emailInput.getText().toString(), passwordInput.getText().toString());
+                user = new User(emailInput.getText().toString(), passwordInput.getText().toString(), null);
                 Connector connector = Connector.getInstance();
-                connector.loginUser(userRequestListener, user);
+                connector.loginUser(userRequestListener, null, user);
             }
         });
 
-        TextView forgotPasswordText = (TextView)findViewById(R.id.text_forgot_password);
+/*        TextView forgotPasswordText = (TextView)findViewById(R.id.text_forgot_password);
         forgotPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,29 +59,34 @@ public class LoginActivity extends Activity implements UserRequestListener {
                             Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
 
         TextView signUpText = (TextView)findViewById(R.id.text_sign_up);
         signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(LoginActivity.this, RegistrationActivity.class);
-                LoginActivity.this.startActivity(mainIntent);
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                LoginActivity.this.startActivity(intent);
                 LoginActivity.this.finish();
             }
         });
     }
 
     @Override
-    public void serviceSuccess(String message) {
+    public void serviceSuccess(RegistrationStatusResponse response) {
+    }
+
+    @Override
+    public void serviceSuccess(LoginStatusResponse response) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("LoginData", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("email", user.getEmail());
-        editor.putString("password", user.getPassword());
+        editor.putString("token", response.getToken());
+        editor.putLong("userId", response.getUserId());
+        editor.putString("email", response.getEmail());
         editor.commit();
 
-        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-        LoginActivity.this.startActivity(mainIntent);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        LoginActivity.this.startActivity(intent);
         LoginActivity.this.finish();
     }
 
