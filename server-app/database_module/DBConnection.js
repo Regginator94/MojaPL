@@ -110,12 +110,12 @@ exports.addUser = function(response, email, password){
 	UserRegistration.addUser(connection, response, email, password);
 }
 
-exports.userLogin = function(response, email, password) {
-	UserLoginMethods.userLogin(connection, response, email, password);
+exports.userLogin = function(response, request) {
+	UserLoginMethods.userLogin(connection, response, request);
 }
 
-exports.userLoginToken = function(response, token) {
-	UserLoginMethods.userLoginToken(response, token);
+exports.userLoginToken = function(response, request) {
+	UserLoginMethods.userLoginToken(connection, response, request);
 }
 
 function authenticateUser(response, token){

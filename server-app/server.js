@@ -42,14 +42,22 @@ app.post('/createUser', function(request, response){
  	DBConnection.addUser(response, request.body.email, request.body.password);
 });
 
-app.post('/login', function(request, response){
- 	DBConnection.userLogin(response, request.body.email, request.body.password);
+// app.post('/login', function(request, response){
+//  	DBConnection.userLogin(response, request.body.email, request.body.password);
+// });
+
+app.post('/loginG', function(request, response){
+	if(request.headers.token != null){
+		DBConnection.userLoginToken(response, request);
+	} else {
+		DBConnection.userLogin(response, request);
+	}
 });
 
-app.post('/tokenLogin', function(request, response) {
-	DBConnection.userLoginToken(response, request.headers.token);
-	//
-});
+// app.post('/tokenLogin', function(request, response) {
+// 	DBConnection.userLoginToken(response, request.headers.token);
+// 	//
+// });
 
 // setInterval(function () {	  
 // 	 FBDownloader.getData('Politechnika.Lodzka');
