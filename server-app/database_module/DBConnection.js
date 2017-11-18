@@ -24,7 +24,6 @@ var connection = mysql.createConnection({
 
 setInterval(function () {
     connection.query('SELECT 1');
-    console.log('MySQL Connection keeper RUN');
 }, 12000);
 
 connection.connect(function(err) {
@@ -64,10 +63,11 @@ exports.getNews = function(response, token, filters) {
     }
 }
 
-exports.getNewsFiltered = function(response, token, categoryId, organizationsId) {  
+exports.getNewsFiltered = function(response, token, categoryId) {  
   //decodeUserFromToken(token);
   if(authenticateUser(response, token)){
-    NewsGetters.getNewsFiltered(connection, response, categoryId, organizationsId);
+     var user = decodeUserToken(token);
+    NewsGetters.getNewsFiltered(connection, response, categoryId, user.id);
   } else{
        response.status(511);
         response.json({
@@ -78,17 +78,18 @@ exports.getNewsFiltered = function(response, token, categoryId, organizationsId)
     }
 }
 
-exports.getNewsByOrganisationFilter = function(response, token, organisations) {  
-  //decodeUserFromToken(token);
+exports.getNewsByOrganisationFilter = function(response, token) {  
   if(authenticateUser(response, token)){
-    NewsGetters.getNewsByOrganisationFilter(connection, response, organisations);
+   
+    var user = decodeUserToken(token);
+    NewsGetters.getNewsByOrgs(connection, response, user.id);
+    //NewsGetters.getNewsByOrganisationFilter(connection, response, organisations);
   } else{
        response.status(511);
         response.json({
             status:false,
             message:'Token is required'
         })  
-        //console.log('User incorrect token login, email :'+email);
     }
 }
 
@@ -106,8 +107,8 @@ exports.getNewsByCategoryFilter = function(response, token, filters) {
     }
 }
 
-exports.addUser = function(response, email, password){
-	UserRegistration.addUser(connection, response, email, password);
+exports.addUser = function(response, request){
+	UserRegistration.addUser(connection, response, request);
 }
 
 exports.userLogin = function(response, request) {
@@ -137,7 +138,8 @@ function authenticateUser(response, token){
     }
 }
 
-// function decodeUserFromToken(token){
-//   decoded = jwt.verify(token, secretKey);
-//   console.log(decoded);
-// }
+function decodeUserToken(token){
+    decoded = jwt.verify(token, secretKey);
+    user = new UserModel(decoded.U_ID, decoded.U_EMAIL, decoded.U_PASSWORD, decoded.U_CREATE_DATE, decoded.LAST_LOGIN_DATE);
+    return user;
+}

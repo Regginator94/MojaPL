@@ -24,35 +24,39 @@ app.get('/api/events', function(request, response){
 // 	DBConnection.getNews(response, request.headers.token, request.query.filters);
 // });
 
-app.get('/dataFiltered', function(request, response) {
-	DBConnection.getNewsFiltered(response, request.headers.token, request.query.category, request.query.organisations);
+app.get('/dataByCategory', function(request, response) {
+	DBConnection.getNewsFiltered(response, request.headers.token, request.query.category);
 });
 
 //flitracja po organizacjach
 app.get('/dataByOrganisation', function(request, response) {
-	DBConnection.getNewsByOrganisationFilter(response, request.headers.token, request.query.organisations);
+	DBConnection.getNewsByOrganisationFilter(response, request.headers.token);
 });
 
 //flitracja po kategoriach
-app.get('/dataByCategory', function(request, response) {
-	DBConnection.getNewsByCategoryFilter(response, request.headers.token, request.query.category);
-});
+// app.get('/dataByCategory', function(request, response) {
+// 	DBConnection.getNewsByCategoryFilter(response, request.headers.token, request.query.category);
+// });
 
 app.post('/createUser', function(request, response){
- 	DBConnection.addUser(response, request.body.email, request.body.password);
+ 	DBConnection.addUser(response, request);
 });
 
 // app.post('/login', function(request, response){
 //  	DBConnection.userLogin(response, request.body.email, request.body.password);
 // });
 
-app.post('/loginG', function(request, response){
+app.post('/login', function(request, response){
 	if(request.headers.token != null){
 		DBConnection.userLoginToken(response, request);
 	} else {
 		DBConnection.userLogin(response, request);
 	}
 });
+
+//TODO
+app.get('/updateFilters', function(request, response){
+})
 
 // app.post('/tokenLogin', function(request, response) {
 // 	DBConnection.userLoginToken(response, request.headers.token);
@@ -66,10 +70,10 @@ app.post('/loginG', function(request, response){
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-  	 FBDownloader.getData('Politechnika.Lodzka',1,1);
-	 FBDownloader.getData('weeia',2,1);
- 	 FBDownloader.getData('klubfuturysta',201,2);
- 	 FBDownloader.getData('studentradiozak',301,3);
- 	//// FBDownloader.getData('Cotton-Club-Łódź-193621223991274',401,4);
-	 PLDownloader.getData();
+	FBDownloader.getData('Politechnika.Lodzka',1,1);
+	FBDownloader.getData('weeia',2,1);
+	FBDownloader.getData('klubfuturysta',201,2);
+	FBDownloader.getData('studentradiozak',301,3);
+	FBDownloader.getData('finestrapizzeria',402,4);
+	PLDownloader.getData();
 });
