@@ -1,4 +1,4 @@
-var mysql      = require('mysql');
+var mysql = require('mysql');
 var jwt = require('jsonwebtoken');
 const NewsInserts = require('./NewsInserts');
 const NewsGetters = require('./NewsGetters');
@@ -24,22 +24,12 @@ var connection = mysql.createConnection({
 
 setInterval(function () {
     connection.query('SELECT 1');
-}, 12000);
+}, 18000);
 
 connection.connect(function(err) {
   if(err)
  console.log(err);
 });
-
-exports.getData = function() {
-	request.headers.token
-	connection.query('SELECT * from organizations', function(err, rows, fields) {
-	  if (!err)
-	    console.log('The solution is: ', rows);
-	  else
-	    console.log('Error while performing Query.');
-	});
-}
 
 exports.insertFBPosts = function(postsList, organisationId, categoryId) {
 	NewsInserts.insertFBPosts(connection, postsList, organisationId, categoryId);
@@ -49,62 +39,22 @@ exports.insertPLNews = function(postsList) {
 	NewsInserts.insertPLNews(connection, postsList);
 }
 
-exports.getNews = function(response, token, filters) {  
-  //decodeUserFromToken(token);
-  if(authenticateUser(response, token)){
-    NewsGetters.getNewsByOrganisationFilter(connection, response, filters);
-  } else{
-       response.status(511);
-        response.json({
-            status:false,
-            message:'Token is required'
-        })  
-        //console.log('User incorrect token login, email :'+email);
-    }
-}
-
 exports.getNewsFiltered = function(response, token, categoryId) {  
-  //decodeUserFromToken(token);
   if(authenticateUser(response, token)){
-     var user = decodeUserToken(token);
+    var user = decodeUserToken(token);
     NewsGetters.getNewsFiltered(connection, response, categoryId, user.id);
   } else{
-       response.status(511);
-        response.json({
-            status:false,
-            message:'Token is required'
-        })  
-        //console.log('User incorrect token login, email :'+email);
-    }
+    tokenIsRequiredResponse(response);
+  } 
 }
 
 exports.getNewsByOrganisationFilter = function(response, token) {  
-  if(authenticateUser(response, token)){
-   
+  if(authenticateUser(response, token)){ 
     var user = decodeUserToken(token);
     NewsGetters.getNewsByOrgs(connection, response, user.id);
-    //NewsGetters.getNewsByOrganisationFilter(connection, response, organisations);
   } else{
-       response.status(511);
-        response.json({
-            status:false,
-            message:'Token is required'
-        })  
-    }
-}
-
-exports.getNewsByCategoryFilter = function(response, token, filters) {	
-  //decodeUserFromToken(token);
-	if(authenticateUser(response, token)){
-		NewsGetters.getNewsByCategoryFilter(connection, response, filters);
-	} else{
-       response.status(511);
-        response.json({
-            status:false,
-            message:'Token is required'
-        })  
-        //console.log('User incorrect token login, email :'+email);
-    }
+    tokenIsRequiredResponse(response);
+  }
 }
 
 exports.addUser = function(response, request){
@@ -121,25 +71,28 @@ exports.userLoginToken = function(response, request) {
 
 function authenticateUser(response, token){
 	if(token){
-        return jwt.verify(token,secretKey,function(err,ress){
-            if(err){
-				return false;
-            } else{
-            	return true;
-            }
-        })
+      return jwt.verify(token,secretKey,function(err,ress){
+        if(err){
+	       return false;
+        } else{
+      	 return true;
+        }
+      })
     }else{
-       response.status(511);
-        response.json({
-            status:false,
-            message:'Token is required'
-        })	
-        //console.log('User incorrect token login, email :'+email);
+      tokenIsRequiredResponse(response);
     }
 }
 
 function decodeUserToken(token){
-    decoded = jwt.verify(token, secretKey);
-    user = new UserModel(decoded.U_ID, decoded.U_EMAIL, decoded.U_PASSWORD, decoded.U_CREATE_DATE, decoded.LAST_LOGIN_DATE);
-    return user;
+  decoded = jwt.verify(token, secretKey);
+  user = new UserModel(decoded.U_ID, decoded.U_EMAIL, decoded.U_PASSWORD, decoded.U_CREATE_DATE, decoded.LAST_LOGIN_DATE);
+  return user;
+}
+
+function tokenIsRequiredResponse(response){
+ response.status(511);
+  response.json({
+    status:false,
+    message:'Token is required'
+  })  
 }

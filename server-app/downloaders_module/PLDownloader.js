@@ -8,7 +8,6 @@ exports.getData = function() {
     var pageBody = '';
     request("https://www.p.lodz.pl/pl/lista/aktualnosci", function (err, body) {
         var plItems = getItems(body);
-        console.log("Pobrano, bez dodawania do DB");
         DBConnection.insertPLNews(plItems);
     });
 }

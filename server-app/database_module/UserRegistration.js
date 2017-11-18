@@ -11,12 +11,7 @@ exports.addUser = function(connection, response, request){
 	connection.query(query, function (err, result, fields) {
 	    if (err){
 	    	throw err;
-	    	console.log('Incorrect registration, email :'+email);
-    		response.status(500);
-            response.json({
-                status:false,
-                message:'Server error'
-            })
+	    	incorrectRegistrationResponse(response, email)
 	    } 
 	    else{
 	    	if(!userExists(result)) {
@@ -24,12 +19,7 @@ exports.addUser = function(connection, response, request){
 	    		connection.query(query, function (err, result, fields) {
 		    			if (err){
 					    	throw err;
-					    	console.log('Incorrect registration, email :'+email);
-				    		response.status(500);
-				            response.json({
-				                status:false,
-				                message:'Server error'
-				            })
+					    	incorrectRegistrationResponse(response, email)
 					    } 
 					    else {
 					    	query = 'INSERT INTO users_filters_by_org (UFBO_U_ID, UFBO_ORGS) VALUES ('+result.insertId+',"'+
@@ -37,29 +27,15 @@ exports.addUser = function(connection, response, request){
 					    	connection.query(query, function (err, result, fields) {
 			    			if (err){
 						    	throw err;
-						    	console.log('Incorrect registration, email :'+email);
-					    		response.status(500);
-					            response.json({
-					                status:false,
-					                message:'Server error'
-					            })
+						    	incorrectRegistrationResponse(response, email);
 						    } else {
-		    		    		response.status(200);
-			                	response.json({
-			                   	 	status:true,
-			                    	message:'User created'
-			                	})	
+		    		    		userCreatedResponse(response)
 						    }
 					    });
 		    		}
 		    	});
 	    	} else {
-		    	console.log('Incorrect registration, email :'+email);
-	    		response.status(403);
-                response.json({
-                    status:false,
-                    message:'User already exists'
-                })
+	    		userAlreadyExists(response, email);
 	    	}
 	    }
    	});
@@ -69,4 +45,30 @@ function userExists(result){
 	var queryResult = result[0];
 	var queryKey = Object.keys(queryResult)[0];
 	return queryResult[queryKey];
+}
+
+function incorrectRegistrationResponse(response, email){
+	console.log('Incorrect registration, email :'+email);
+	response.status(500);
+    response.json({
+        status:false,
+        message:'Server error'
+    })
+}
+
+function userAlreadyExists(response, email){
+	console.log('Incorrect registration, email :'+email);
+	response.status(500);
+    response.json({
+        status:false,
+        message:'User already exists error'
+    })
+}
+
+function userCreatedResponse(response){
+	response.status(200);
+	response.json({
+   	 	status:true,
+    	message:'User created'
+	})	
 }
