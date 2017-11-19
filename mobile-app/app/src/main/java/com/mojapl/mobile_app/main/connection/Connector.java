@@ -42,9 +42,9 @@ public class Connector {
         }
         return connector;
     }
-    public void getEvents(ServerRequestListener serverRequestListener) {
+    public void getEvents(ServerRequestListener serverRequestListener, String token) {
         EventsService eventsService = new EventsService(serverRequestListener);
-        eventsService.getData();
+        eventsService.getData(token);
     }
 
     public void createUser(UserRequestListener userRequestListener, User user) {

@@ -30,23 +30,21 @@ public class EventsService {
         connector = Connector.getInstance();
     }
 
-    public void getData() {
+    public void getData(String token) {
         IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
 
-        Call<List<Event>> call = client.getEvents();
+        Call<List<Event>> call = client.getEvents(token);
 
         call.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (Config.DEBUG) {
                     Log.d(TAG, call.toString());
-                    Log.d(TAG, response.body().get(0).toString());
                 }
                 serverRequestListener.serviceSuccess(response.body());
             }
 
             @Override
-
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 if (Config.DEBUG) {
                     Log.e(TAG + " error", t.toString());

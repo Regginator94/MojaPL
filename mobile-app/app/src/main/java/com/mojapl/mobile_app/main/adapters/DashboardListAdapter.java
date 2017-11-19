@@ -49,7 +49,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.date.setText(mEventList.get(position).getDate());
+        holder.date.setText(mEventList.get(position).getStartDate());
 //        String html = "<a href=\""+mEventList.get(position).getUrl()+"\">LINK</a>";
         String html = "Link do źródła: " + mEventList.get(position).getUrl();
         Spanned result;
@@ -127,7 +127,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             image = (ImageView) itemView.findViewById(R.id.image_view);
             expandedView = (LinearLayout) itemView.findViewById(R.id.expandView);
             content = (TextView) itemView.findViewById(R.id.content);
-            date = (TextView) itemView.findViewById(R.id.date);
+            date = (TextView) itemView.findViewById(R.id.startDate);
             href = (TextView) itemView.findViewById(R.id.html);
 //            imageExpanded = (ImageView) itemView.findViewById(R.id.image_expanded);
         }

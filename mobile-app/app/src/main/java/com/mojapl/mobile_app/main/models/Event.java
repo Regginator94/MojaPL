@@ -25,61 +25,25 @@ public class Event extends RealmObject {
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
-    @SerializedName("date")
+    @SerializedName("startDate")
     @Expose
-    private String date;
+    private String startDate;
+    @SerializedName("createDate")
+    @Expose
+    private String createDate;
     @SerializedName("url")
     @Expose
     private String url;
     @SerializedName("fbPost")
     @Expose
     private boolean fbPost;
+    @SerializedName("organisationName")
+    @Expose
+    private boolean organisationName;
 
-    public Event(String title, String content, String date) {
-        this.title = title;
-        this.content = content;
-        this.date = date;
-    }
 
     public Event() {
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getOrganisationId() {
-        return organisationId;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public boolean isFbPost() {
-        return fbPost;
-    }
-
 
     @Override
     public String toString() {
@@ -90,40 +54,99 @@ public class Event extends RealmObject {
                 ", content='" + content + '\'' +
                 ", title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", date='" + date + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", createDate='" + createDate + '\'' +
                 ", url='" + url + '\'' +
                 ", fbPost=" + fbPost +
+                ", organisationName=" + organisationName +
                 '}';
     }
 
-    public void setFbPost(boolean fbPost) {
-        this.fbPost = fbPost;
+    public int getId() {
+        return id;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public int getOrganisationId() {
+        return organisationId;
     }
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getCategoryId() {
+        return categoryId;
     }
-    public void setContent(String string) {
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public boolean isFbPost() {
+        return fbPost;
+    }
+
+    public void setFbPost(boolean fbPost) {
+        this.fbPost = fbPost;
+    }
+
+    public boolean isOrganisationName() {
+        return organisationName;
+    }
+
+    public void setOrganisationName(boolean organisationName) {
+        this.organisationName = organisationName;
     }
 }

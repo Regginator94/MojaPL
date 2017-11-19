@@ -15,8 +15,9 @@ import retrofit2.http.POST;
 
 public interface IClientHTTP {
 
-    @GET("/data")
-    Call<List<Event>> getEvents();
+    @GET("/dataByOrganisation")
+    Call<List<Event>> getEvents(@Header("token") String token);
+
 
     @POST("/createUser")
     Call<RegistrationStatusResponse> createUser(@Body User user);

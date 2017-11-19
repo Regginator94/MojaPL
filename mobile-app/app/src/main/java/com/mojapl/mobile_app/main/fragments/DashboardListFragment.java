@@ -1,7 +1,10 @@
 package com.mojapl.mobile_app.main.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +35,7 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     private IEventRepository eventRepository = new EventRepository();
     private IEventRepository.onSaveEventCallback onSaveEventCallback;
     private List<Event> events;
-
+    private SharedPreferences pref;
     int SPAN_COUNT = 1;
 
     @Override
@@ -54,7 +57,8 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         dialog.show();
         subscribeCallbacks();
 
-        connectionConfig.getEvents(this);
+        pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
+        connectionConfig.getEvents(this, pref.getString("token", ""));
         return view;
     }
 

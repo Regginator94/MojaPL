@@ -24,7 +24,7 @@ public class EventRepository implements IEventRepository {
         realm.beginTransaction();
         Event realmObject = realm.createObject(Event.class);
         realmObject.setCategoryId(event.getCategoryId());
-        realmObject.setDate(event.getDate());
+        realmObject.setStartDate(event.getStartDate());
         realmObject.setFbPost(event.isFbPost());
         realmObject.setId(event.getId());
         realmObject.setImageUrl(event.getImageUrl());
