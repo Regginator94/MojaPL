@@ -25,6 +25,7 @@
             android:name=".main.RegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".main.SettingsActivity"></activity>
+        <activity android:name=".main.DashboardCategoryActivity"></activity>
     </application>
 
 </manifest>

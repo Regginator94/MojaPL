@@ -12,11 +12,16 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface IClientHTTP {
 
     @GET("/dataByOrganisation")
-    Call<List<Event>> getEvents(@Header("token") String token);
+    Call<List<Event>> getEventsByOrganisation(@Header("token") String token);
+
+
+    @GET("/dataByCategory")
+    Call<List<Event>> getEventsByCategory(@Header("token") String token, @Query("category") int categoryId);
 
 
     @POST("/createUser")

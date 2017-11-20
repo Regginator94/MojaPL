@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.DashboardListAdapter;
@@ -58,7 +58,13 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         subscribeCallbacks();
 
         pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
-        connectionConfig.getEvents(this, pref.getString("token", ""));
+
+        if (DashboardFragment.clickPosition > 0) {
+            connectionConfig.getEventsByCategory(this, pref.getString("token", ""), DashboardFragment.clickPosition);
+        } else {
+            connectionConfig.getEventsByOrganisation(this, pref.getString("token", ""));
+        }
+
         return view;
     }
 
@@ -66,11 +72,15 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     public void serviceSuccess(List<Event> events) {
         this.events = events;
         adapter.updateList(this.events);
-
-        for (int i = 0; i < events.size(); i++) {
-            eventRepository.addEvents(events.get(i), onSaveEventCallback);
-
+        if (events != null) {
+            for (int i = 0; i < events.size(); i++) {
+                eventRepository.addEvents(events.get(i), onSaveEventCallback);
+            }
+        } else {
+            Toast.makeText(getContext(), "No events in this category :(", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
         }
+
 
         dialog.hide();
     }
@@ -96,4 +106,9 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         };
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        dialog.dismiss();
+    }
 }

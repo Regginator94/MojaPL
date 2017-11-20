@@ -18,17 +18,17 @@ public class Connector {
     private Retrofit.Builder builder;
     private Retrofit retrofit;
 
-    private Connector(){
+    private Connector() {
         httpClient = new OkHttpClient.Builder();
 
-         builder =
+        builder =
                 new Retrofit.Builder()
                         .baseUrl(Config.SERVER_URL)
                         .addConverterFactory(
                                 GsonConverterFactory.create()
                         );
 
-         retrofit =
+        retrofit =
                 builder
                         .client(
                                 httpClient.build()
@@ -36,15 +36,21 @@ public class Connector {
                         .build();
     }
 
-    public static Connector getInstance(){
-        if (connector == null){
+    public static Connector getInstance() {
+        if (connector == null) {
             connector = new Connector();
         }
         return connector;
     }
-    public void getEvents(ServerRequestListener serverRequestListener, String token) {
+
+    public void getEventsByOrganisation(ServerRequestListener serverRequestListener, String token) {
         EventsService eventsService = new EventsService(serverRequestListener);
-        eventsService.getData(token);
+        eventsService.getDataByOrganisation(token);
+    }
+
+    public void getEventsByCategory(ServerRequestListener serverRequestListener, String token, int categoryId) {
+        EventsService eventsService = new EventsService(serverRequestListener);
+        eventsService.getDataByCategory(token, categoryId);
     }
 
     public void createUser(UserRequestListener userRequestListener, User user) {

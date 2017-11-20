@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,6 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
         holder.date.setText(mEventList.get(position).getStartDate());
 //        String html = "<a href=\""+mEventList.get(position).getUrl()+"\">LINK</a>";
         String html = "Link do źródła: " + mEventList.get(position).getUrl();
@@ -58,7 +56,6 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         } else {
             result = Html.fromHtml(html);
         }
-        Log.i("LINK", html);
         holder.href.setClickable(true);
         holder.href.setText(html);
         holder.href.setMovementMethod(LinkMovementMethod.getInstance());
@@ -118,7 +115,6 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         public TextView date;
         public LinearLayout expandedView;
         public TextView content;
-        public ImageView imageExpanded;
         public TextView href;
 
         public ViewHolder(View itemView) {
@@ -129,7 +125,6 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             content = (TextView) itemView.findViewById(R.id.content);
             date = (TextView) itemView.findViewById(R.id.startDate);
             href = (TextView) itemView.findViewById(R.id.html);
-//            imageExpanded = (ImageView) itemView.findViewById(R.id.image_expanded);
         }
 
     }

@@ -1,16 +1,19 @@
 package com.mojapl.mobile_app.main.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
+import com.mojapl.mobile_app.main.DashboardCategoryActivity;
 import com.mojapl.mobile_app.main.adapters.DashboardAdapter;
 import com.mojapl.mobile_app.main.listeners.OnDashboardItemClickListener;
 import com.mojapl.mobile_app.main.models.DashboardItem;
@@ -23,6 +26,7 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
 
     public static final int SPAN_COUNT = 2;
     private RecyclerView mRecyclerView;
+    public static int clickPosition = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +53,8 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(getContext(), "#" + position, Toast.LENGTH_SHORT).show();
+        clickPosition = position + 1;
+        Intent intent = new Intent(getContext(), DashboardCategoryActivity.class);
+        startActivity(intent);
     }
 }
