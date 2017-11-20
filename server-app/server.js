@@ -9,6 +9,7 @@ const FBDownloader = require('./downloaders_module/FBDownloader');
 const WEEIADownloader = require('./downloaders_module/WEEIADownloader');
 const PLDownloader = require('./downloaders_module/PLDownloader');
 const DBConnection = require('./database_module/DBConnection');
+const TwitterDownloader = require('./downloaders_module/TwitterDownloader');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -40,20 +41,21 @@ app.post('/login', function(request, response){
 	}
 });
 
-//TODO
-app.get('/updateFilters', function(request, response){
+app.put('/updateFilters', function(request, response){
+	DBConnection.updateFilters(response, request);
 })
 
-setInterval(function () {	  
-	console.log("DATA UPDATE.");
-	FBDownloader.getData('Politechnika.Lodzka',1,1);
-	FBDownloader.getData('weeia',2,1);
-	FBDownloader.getData('klubfuturysta',201,2);
-	FBDownloader.getData('studentradiozak',301,3);
-	FBDownloader.getData('finestrapizzeria',402,4);
-	PLDownloader.getData();
- }, 3000000);
+// setInterval(function () {	  
+// 	console.log("DATA UPDATE.");
+// 	FBDownloader.getData('Politechnika.Lodzka',1,1);
+// 	FBDownloader.getData('weeia',2,1);
+// 	FBDownloader.getData('klubfuturysta',201,2);
+// 	FBDownloader.getData('studentradiozak',301,3);
+// 	FBDownloader.getData('finestrapizzeria',402,4);
+// 	PLDownloader.getData();
+//  }, 3000000);
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
+  //TwitterDownloader.getTweets();
 });

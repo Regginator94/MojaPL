@@ -4,6 +4,7 @@ const NewsInserts = require('./NewsInserts');
 const NewsGetters = require('./NewsGetters');
 const UserLoginMethods = require('./UserLoginMethods');
 const UserRegistration = require('./UserRegistration');
+const FiltersManagement = require('./FiltersManagement');
 const UserModel = require('./../objects/UserModel');
 
 var secretKey = 'adssad1';
@@ -67,6 +68,15 @@ exports.userLogin = function(response, request) {
 
 exports.userLoginToken = function(response, request) {
 	UserLoginMethods.userLoginToken(connection, response, request);
+}
+
+exports.updateFilters = function(response, request){
+    if(authenticateUser(response, request.headers.token)){
+      var user = decodeUserToken(request.headers.token);
+      FiltersManagement.updateFilters(connection, response, request);
+  } else{
+    tokenIsRequiredResponse(response);
+  } 
 }
 
 function authenticateUser(response, token){

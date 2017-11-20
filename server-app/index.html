@@ -123,7 +123,32 @@
 					}</p>
 				</div>
 			</div>			
-
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">Data getters</div>
+	<div class="panel-body">
+		<div class="panel panel-success">
+			<div class="panel-heading">Filtracja by organizacja</div>
+			<div class="panel-body">		
+				<h4>Path: /updateFilters  PUT METHOD</h4>
+				<h5>Headers:</h5>
+				<p>token</p>
+				<h5>Params:</h5>
+				<p>filters (MIGHT BE LIST ie. 1,23,123, IN QUERY NIE IN BODY)</p>
+				<p>SAMPLE URL: /updateFilters?filters=401,23,312</p>
+				<h5>Sample response if correct:</h5>
+				<p>{
+					"status": true,
+					"message": "Filters updated"
+				}</p>
+				<h5>Sample response if incorrect:</h5>	
+				<p>{
+					"status": false,
+					"message": "Data base ERROR"
+				}</p>
+			</div>
+		</div>	
+	</div>
 </div>
 </body>
 </html>
