@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.models.SettingElement;
@@ -51,6 +52,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return this.listChild.get(this.listHeaders.get(groupPosition)).get(childPosition);
+
     }
 
     @Override
@@ -88,7 +90,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final SettingElement childElement = (SettingElement) getChild(groupPosition, childPosition);
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -102,7 +103,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         txtListChild.setText(childElement.getName());
         checkBox.setChecked(childElement.getSelected());
-        Log.v("MyLog", childElement.getSelected().toString());
+
         return convertView;
     }
 
