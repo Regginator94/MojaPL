@@ -2,15 +2,14 @@ package com.mojapl.mobile_app.main.fragments;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.DashboardCategoryActivity;
@@ -24,7 +23,8 @@ import java.util.List;
 
 public class DashboardFragment extends Fragment implements OnDashboardItemClickListener {
 
-    public static final int SPAN_COUNT = 2;
+    public static final int PORTRAIT_SPAN_COUNT = 2;
+    public static final int LANDSCAPE_SPAN_COUNT = 4;
     private RecyclerView mRecyclerView;
     public static int clickPosition = -1;
 
@@ -34,7 +34,11 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), SPAN_COUNT));
+        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), PORTRAIT_SPAN_COUNT));
+        } else {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), LANDSCAPE_SPAN_COUNT));
+        }
 
         List<DashboardItem> items = new ArrayList<>();
         items.add(new DashboardItem(R.drawable.icon_university, "UCZELNIA"));
@@ -42,7 +46,7 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
         items.add(new DashboardItem(R.drawable.icon_hobby, "HOBBY"));
         items.add(new DashboardItem(R.drawable.icon_discount, "RABATY"));
 
-        DashboardAdapter adapter = new DashboardAdapter();
+        DashboardAdapter adapter = new DashboardAdapter(this.getActivity());
         adapter.setItems(items);
         adapter.setOnItemClickListener(this);
 

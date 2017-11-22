@@ -1,13 +1,20 @@
 package com.mojapl.mobile_app.main.adapters;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mojapl.mobile_app.R;
+import com.mojapl.mobile_app.main.fragments.DashboardFragment;
 import com.mojapl.mobile_app.main.listeners.OnDashboardItemClickListener;
 import com.mojapl.mobile_app.main.models.DashboardItem;
 
@@ -17,6 +24,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     private List<DashboardItem> mItemList;
     private OnDashboardItemClickListener mOnItemClickListener;
+    Activity mActivity;
+
+    public DashboardAdapter (Activity activity) {
+        this.mActivity = activity;
+    }
 
     public void setItems(List<DashboardItem> items) {
         this.mItemList = items;
@@ -30,6 +42,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dashboard, parent, false);
+
+        if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+            params.height = (parent.getMeasuredHeight() / 2) - 8;
+            view.setLayoutParams(params);
+        } else {
+            GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+            params.height = parent.getMeasuredHeight() - 8;
+            view.setLayoutParams(params);
+        }
+
+
+
         return new ViewHolder(view);
     }
 
