@@ -5,8 +5,8 @@
         android:title="@string/settings">
     </item>
     <item
-        android:id="@+id/menu_example"
-        android:title="Example">
+        android:id="@+id/menu_edit_profile"
+        android:title="@string/label_edit_profile">
     </item>
     <item
         android:id="@+id/menu_logout"

@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_settings) {
             intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.menu_edit_profile) {
+            intent = new Intent(this, EditProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.menu_logout) {
             SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();

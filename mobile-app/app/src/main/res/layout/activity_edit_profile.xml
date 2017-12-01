@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingLeft="48dp"
+    android:paddingRight="48dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@color/colorRedDark">
+
+    <ImageView android:id="@+id/image_logo_transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:src="@drawable/image_logo_transparent"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
+
+        <ImageView android:id="@+id/icon_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_user"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/input_new_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:inputType="textEmailAddress"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/white"
+            android:imeOptions="actionDone"
+            android:hint="@string/hint_type_new_email"
+            android:textColorHint="@android:color/white"
+            android:singleLine="true"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_change_email"
+        android:layout_width="160dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_rounded"
+        android:text="Zmień email"
+        android:textColor="@color/colorRedDark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
+
+        <ImageView
+            android:id="@+id/icon_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_password" />
+
+        <EditText
+            android:id="@+id/input_new_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:inputType="textPassword"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/white"
+            android:imeOptions="actionDone"
+            android:hint="@string/hint_type_new_password"
+            android:textColorHint="@android:color/white"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_change_password"
+        android:layout_width="160dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_rounded"
+        android:text="@string/change_password"
+        android:textColor="@color/colorRedDark" />
+
+</LinearLayout>
