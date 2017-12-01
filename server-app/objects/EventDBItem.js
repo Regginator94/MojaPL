@@ -1,7 +1,7 @@
 //Object represents event from db
 
 class FBItem {
-	constructor(_id, _organisationId, _categoryId, _content, _title, _imageUrl, _startDate, _createDate, _url, _fbPost, _organisationName) {
+	constructor(_id, _organisationId, _categoryId, _content, _title, _imageUrl, _startDate, _createDate, _url, _fbPost, _organisationName, _tweet) {
 		this.id = _id;
 		this.organisationId = _organisationId;
 		this.categoryId = _categoryId;
@@ -13,6 +13,7 @@ class FBItem {
 		this.url = _url
 		this.fbPost = (_fbPost == 1 ? "true" : "false");
 		this.organisationName = _organisationName;
+		this.tweet = (_tweet == 1 ? "true" : "false");
 	}
 
 	getId(){

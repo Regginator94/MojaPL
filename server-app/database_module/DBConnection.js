@@ -32,6 +32,10 @@ connection.connect(function(err) {
  console.log(err);
 });
 
+exports.insertTweets = function(tweets, organisationId, categoryId){
+  NewsInserts.insertTweets(connection, tweets, organisationId, categoryId);
+}
+
 exports.insertFBPosts = function(postsList, organisationId, categoryId) {
 	NewsInserts.insertFBPosts(connection, postsList, organisationId, categoryId);
 }

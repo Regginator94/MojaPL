@@ -1,6 +1,7 @@
 var express = require('express'),
 	app = express();
 var http = require('http').createServer(app);
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -45,17 +46,18 @@ app.put('/updateFilters', function(request, response){
 	DBConnection.updateFilters(response, request);
 })
 
-// setInterval(function () {	  
-// 	console.log("DATA UPDATE.");
-// 	FBDownloader.getData('Politechnika.Lodzka',1,1);
-// 	FBDownloader.getData('weeia',2,1);
-// 	FBDownloader.getData('klubfuturysta',201,2);
-// 	FBDownloader.getData('studentradiozak',301,3);
-// 	FBDownloader.getData('finestrapizzeria',402,4);
-// 	PLDownloader.getData();
-//  }, 3000000);
+setInterval(function () {	  
+	console.log("DATA UPDATE.");
+	FBDownloader.getData('Politechnika.Lodzka',1,1);
+	FBDownloader.getData('weeia',2,1);
+	FBDownloader.getData('klubfuturysta',201,2);
+	FBDownloader.getData('studentradiozak',301,3);
+	FBDownloader.getData('finestrapizzeria',402,4);
+	PLDownloader.getData();
+ }, 3000000);
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-  //TwitterDownloader.getTweets();
+  //Radio Zak Tweets
+  TwitterDownloader.updateTweets('888mhz',301,3);
 });

@@ -29,3 +29,15 @@ exports.insertPLNews = function(connection, postsList) {
 	}
 	console.log('NEWS FOR ORGANISTATION pl.lodz.pl UPDATED');
 }
+
+exports.insertTweets = function(connection, tweets, organisationId, categoryId) {
+	for(var i = 0; i < tweets.length; i++) {
+		var tweet = tweets[i];
+		  connection.query('INSERT INTO events (E_O_ID, E_C_ID, E_TEXT, E_START_DATE, E_CREATE_DATE, E_URL, E_FB_POST, E_FB_ID, E_TWEET) '+
+			 'VALUES ('+organisationId+','+categoryId+',"'+tweet.text+'","'+tweet.startDate+'", NOW(),"'+tweet.tweetUrl+'",'+false+','+tweet.id+','+true+')', function(err){
+				if(err) {
+
+				}
+			});
+	}
+}
