@@ -47,19 +47,14 @@ public class LoginActivity extends Activity implements UserRequestListener {
             }
         });
 
-/*        TextView forgotPasswordText = (TextView)findViewById(R.id.text_forgot_password);
+        TextView forgotPasswordText = (TextView)findViewById(R.id.text_forgot_password);
         forgotPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (emailInput.getText().toString().length() != 0) {
-                    Toast.makeText(LoginActivity.this, R.string.message_sent_link_to_reset_password,
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, R.string.message_type_email,
-                            Toast.LENGTH_LONG).show();
-                }
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                LoginActivity.this.startActivity(intent);
             }
-        });*/
+        });
 
         TextView signUpText = (TextView)findViewById(R.id.text_sign_up);
         signUpText.setOnClickListener(new View.OnClickListener() {

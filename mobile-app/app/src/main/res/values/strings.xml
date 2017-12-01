@@ -23,4 +23,7 @@
     <string name="hint_type_new_password">Wpisz nowe hasło...</string>
     <string name="label_edit_profile">Edytuj profil</string>
     <string name="error_profile_edition_failed">Błąd! Zmiana danych nie zakończyła się pomyślnie.</string>
+    <string name="send_email_with_new_password">Wyślij email</string>
+    <string name="error_sending_email_failed">Błąd! Przypominanie hasła nie zakończyło się pomyślnie.</string>
+    <string name="label_remind_password">Przypomnij hasło</string>
 </resources>
