@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRealmDb() {
         Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        RealmConfiguration config = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(config);
     }
 

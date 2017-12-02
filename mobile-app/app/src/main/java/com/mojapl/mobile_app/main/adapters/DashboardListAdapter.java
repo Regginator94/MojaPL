@@ -1,6 +1,7 @@
 package com.mojapl.mobile_app.main.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -42,6 +43,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
         holder.itemView.setOnClickListener(DashboardListAdapter.this);
         holder.itemView.setTag(holder);
+
         return holder;
     }
 
@@ -59,6 +61,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         holder.href.setClickable(true);
         holder.href.setText(html);
         holder.href.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.organisationName.setText(mEventList.get(position).getOrganisationName());
         if (mEventList.get(position).isFbPost()) {
             holder.image.setImageResource(R.drawable.fb_logo);
             String content = mEventList.get(position).getContent();
@@ -83,6 +86,12 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             isCollapsed = true;
         } else {
             holder.expandedView.setVisibility(View.GONE);
+        }
+
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorTransparentDarkGrey));
+        } else {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorTransparentGrey));
         }
 
     }
@@ -116,6 +125,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         public LinearLayout expandedView;
         public TextView content;
         public TextView href;
+        public TextView organisationName;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -125,6 +135,7 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             content = (TextView) itemView.findViewById(R.id.content);
             date = (TextView) itemView.findViewById(R.id.startDate);
             href = (TextView) itemView.findViewById(R.id.html);
+            organisationName = (TextView) itemView.findViewById(R.id.organisation);
         }
 
     }

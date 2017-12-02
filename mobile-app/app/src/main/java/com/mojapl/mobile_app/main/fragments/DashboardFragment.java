@@ -34,10 +34,16 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), PORTRAIT_SPAN_COUNT));
         } else {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), LANDSCAPE_SPAN_COUNT));
+            if ((getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), PORTRAIT_SPAN_COUNT));
+
+            } else {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), LANDSCAPE_SPAN_COUNT));
+            }
         }
 
         List<DashboardItem> items = new ArrayList<>();

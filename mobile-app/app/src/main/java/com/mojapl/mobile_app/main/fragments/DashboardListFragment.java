@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 
-public class DashboardListFragment extends Fragment implements ServerRequestListener, IEventsCallbeck {
+public class DashboardListFragment extends Fragment implements ServerRequestListener, IEventsCallback {
     Connector connectionConfig;
     private ProgressDialog dialog;
     private RecyclerView mRecyclerView;

@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mojapl.mobile_app.R;
-import com.mojapl.mobile_app.main.fragments.DashboardFragment;
 import com.mojapl.mobile_app.main.listeners.OnDashboardItemClickListener;
 import com.mojapl.mobile_app.main.models.DashboardItem;
 
@@ -26,7 +22,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private OnDashboardItemClickListener mOnItemClickListener;
     Activity mActivity;
 
-    public DashboardAdapter (Activity activity) {
+    int i = 0;
+
+    public DashboardAdapter(Activity activity) {
         this.mActivity = activity;
     }
 
@@ -40,20 +38,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dashboard, parent, false);
 
-        if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
-            params.height = (parent.getMeasuredHeight() / 2) - 8;
-            view.setLayoutParams(params);
+        final GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+
+        if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            params.height = (parent.getMeasuredHeight() / 2) - 4;
         } else {
-            GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
-            params.height = parent.getMeasuredHeight() - 8;
-            view.setLayoutParams(params);
+            if ((mActivity.getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+                params.height = (parent.getHeight() / 2) - 4;
+            } else {
+                params.height = parent.getMeasuredHeight() - 4;
+            }
         }
 
+        view.setLayoutParams(params);
 
+        if (i == 1 || i == 2) {
+            view.setBackgroundResource(R.color.colorTransparentDarkRed);
+        } else {
+            view.setBackgroundResource(R.color.colorTransparentRed);
+        }
+
+        i += 1;
 
         return new ViewHolder(view);
     }

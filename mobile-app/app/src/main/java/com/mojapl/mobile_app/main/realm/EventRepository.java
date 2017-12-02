@@ -31,6 +31,8 @@ public class EventRepository implements IEventRepository {
         realmObject.setContent(event.getContent());
         realmObject.setUrl(event.getUrl());
         realmObject.setOrganisationId(event.getOrganisationId());
+        realmObject.setOrganisationName(event.getOrganisationName());
+        realmObject.setTweet(event.isTweet());
         realm.commitTransaction();
         callback.onSuccess();
     }

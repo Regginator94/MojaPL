@@ -39,7 +39,10 @@ public class Event extends RealmObject {
     private boolean fbPost;
     @SerializedName("organisationName")
     @Expose
-    private boolean organisationName;
+    private String organisationName;
+    @SerializedName("tweet")
+    @Expose
+    private boolean tweet;
 
 
     public Event() {
@@ -59,6 +62,7 @@ public class Event extends RealmObject {
                 ", url='" + url + '\'' +
                 ", fbPost=" + fbPost +
                 ", organisationName=" + organisationName +
+                ", tweet=" + tweet +
                 '}';
     }
 
@@ -142,11 +146,19 @@ public class Event extends RealmObject {
         this.fbPost = fbPost;
     }
 
-    public boolean isOrganisationName() {
+    public String getOrganisationName() {
         return organisationName;
     }
 
-    public void setOrganisationName(boolean organisationName) {
+    public void setOrganisationName(String organisationName) {
         this.organisationName = organisationName;
+    }
+
+    public boolean isTweet() {
+        return tweet;
+    }
+
+    public void setTweet(boolean tweet) {
+        this.tweet = tweet;
     }
 }
