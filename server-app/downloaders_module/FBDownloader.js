@@ -21,7 +21,7 @@ exports.getData = function(pageId, organisationId, categoryId) {
  				post = new FBItem('', post.created_time, post.message, post.id, postUrl, pageId);
  				PostList.push(post);
  			}
- 			DBConnection.insertFBPosts(PostList, organisationId, categoryId);
+ 			//DBConnection.insertFBPosts(PostList, organisationId, categoryId);
         });
 	}).on('error', (e) => {
 	  console.error(e);

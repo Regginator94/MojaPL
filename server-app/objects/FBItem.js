@@ -1,10 +1,10 @@
 //Object represent post message from Facebook API
 
 class FBItem {
-	constructor(_created_at, _text, _message, _id, _postUrl, _pageId) {
+	constructor(_startDate, _text, _message, _id, _postUrl, _pageId) {
 		this.id = _id;
 		this.startDate = _startDate.replace(/T/, ' ').replace(/\..+/, '').replace('+0000','');  //sparsowany czas
-		this.createdTime = _createdTime; // czas dodania do DB
+		//this.createdTime = _createdTime; // czas dodania do DB
 		this.message = _message;
 		this.postUrl = _postUrl
 		this.pageId = _pageId;

@@ -7,7 +7,6 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 const FBDownloader = require('./downloaders_module/FBDownloader');
-const WEEIADownloader = require('./downloaders_module/WEEIADownloader');
 const PLDownloader = require('./downloaders_module/PLDownloader');
 const DBConnection = require('./database_module/DBConnection');
 const TwitterDownloader = require('./downloaders_module/TwitterDownloader');
@@ -67,14 +66,21 @@ setInterval(function () {
 	FBDownloader.getData('Politechnika.Lodzka',1,1);
 	FBDownloader.getData('weeia',2,1);
 	FBDownloader.getData('klubfuturysta',201,2);
-	FBDownloader.getData('studentradiozak',301,3);
-	FBDownloader.getData('finestrapizzeria',402,4);
+	FBDownloader.getData('AZS.Politechnika.Lodzka',304,3);
+	FBDownloader.getData('iaeste.tul',305,3);
+	FBDownloader.getData('spotmepl',306,3);
+	FBDownloader.getData('LodzErasmus',307,3);
+	FBDownloader.getData('samorzadstudenckipl',308,3);
+	FBDownloader.getData('Biuro.Karier.Politechnika.Lodzka',309,3);
+	FBDownloader.getData('dotNET.WEEIA',310,3);
+	FBDownloader.getData('WRSmechaniczny',3,1);
+	FBDownloader.getData('Wydzial.Chemiczny',4,1);
+	FBDownloader.getData('FTIMS.P.Lodz',8,1);
 	TwitterDownloader.updateTweets('888mhz',301,3);
 	PLDownloader.getData();
  }, 3000000);
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-
-
+  
 });
