@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
@@ -23,6 +24,9 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
 
     private UserRequestListener userRequestListener;
 
+    private ProgressBar progressBarEmail;
+    private ProgressBar progressBarPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,8 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
 
         final EditText emailInput = (EditText)findViewById(R.id.input_new_email);
         final EditText passwordInput = (EditText)findViewById(R.id.input_new_password);
+        progressBarEmail = (ProgressBar)findViewById(R.id.progress_bar_email);
+        progressBarPassword = (ProgressBar)findViewById(R.id.progress_bar_password);
 
         SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);
         final String token = preferences.getString("token", null);
@@ -51,6 +57,7 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
                     return;
                 }
                 EditProfileRequest editProfileRequest = new EditProfileRequest(emailInput.getText().toString(), null);
+                progressBarEmail.setVisibility(View.VISIBLE);
                 Connector connector = Connector.getInstance();
                 connector.editProfile(userRequestListener, token, editProfileRequest);
             }
@@ -71,6 +78,7 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
                     return;
                 }
                 EditProfileRequest editProfileRequest = new EditProfileRequest(null, passwordInput.getText().toString());
+                progressBarPassword.setVisibility(View.VISIBLE);
                 Connector connector = Connector.getInstance();
                 connector.editProfile(userRequestListener, token, editProfileRequest);
             }
@@ -100,11 +108,15 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
             Toast.makeText(EditProfileActivity.this, R.string.error_profile_edition_failed,
                     Toast.LENGTH_LONG).show();
         }
+        progressBarEmail.setVisibility(View.GONE);
+        progressBarPassword.setVisibility(View.GONE);
     }
 
     @Override
     public void serviceFailure(Exception e) {
         Toast.makeText(EditProfileActivity.this, R.string.error_profile_edition_failed,
                 Toast.LENGTH_LONG).show();
+        progressBarEmail.setVisibility(View.GONE);
+        progressBarPassword.setVisibility(View.GONE);
     }
 }

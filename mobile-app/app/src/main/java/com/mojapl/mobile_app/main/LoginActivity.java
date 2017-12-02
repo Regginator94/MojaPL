@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ public class LoginActivity extends Activity implements UserRequestListener {
     private UserRequestListener userRequestListener;
     private User user;
 
+    private ProgressBar progressBar;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -29,6 +32,7 @@ public class LoginActivity extends Activity implements UserRequestListener {
 
         final EditText emailInput = (EditText)findViewById(R.id.input_user);
         final EditText passwordInput = (EditText)findViewById(R.id.input_password);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         userRequestListener = this;
 
@@ -42,6 +46,7 @@ public class LoginActivity extends Activity implements UserRequestListener {
                     return;
                 }
                 user = new User(emailInput.getText().toString(), passwordInput.getText().toString(), null);
+                progressBar.setVisibility(View.VISIBLE);
                 Connector connector = Connector.getInstance();
                 connector.loginUser(userRequestListener, null, user);
             }
@@ -83,10 +88,12 @@ public class LoginActivity extends Activity implements UserRequestListener {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         LoginActivity.this.startActivity(intent);
         LoginActivity.this.finish();
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void serviceFailure(Exception e) {
+        progressBar.setVisibility(View.GONE);
         Toast.makeText(LoginActivity.this, R.string.error_incorrect_login_data,
                 Toast.LENGTH_LONG).show();
     }

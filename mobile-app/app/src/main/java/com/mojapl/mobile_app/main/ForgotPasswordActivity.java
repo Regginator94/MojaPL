@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
@@ -19,12 +20,15 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserReq
 
     private UserRequestListener userRequestListener;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
         final EditText emailInput = (EditText)findViewById(R.id.input_email);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         userRequestListener = this;
 
@@ -38,6 +42,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserReq
                     return;
                 }
                 EmailRequest emailRequest = new EmailRequest(emailInput.getText().toString());
+                progressBar.setVisibility(View.VISIBLE);
                 Connector connector = Connector.getInstance();
                 connector.resetPassword(userRequestListener, emailRequest);
             }
@@ -67,11 +72,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserReq
             Toast.makeText(ForgotPasswordActivity.this, R.string.error_sending_email_failed,
                     Toast.LENGTH_LONG).show();
         }
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void serviceFailure(Exception e) {
         Toast.makeText(ForgotPasswordActivity.this, R.string.error_sending_email_failed,
                 Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
     }
 }

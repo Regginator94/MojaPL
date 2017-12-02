@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
 
     private Long selectedFacultyId;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         final EditText emailInput = (EditText)findViewById(R.id.input_user);
         final EditText passwordInput = (EditText)findViewById(R.id.input_password);
         final EditText passwordRepeatInput = (EditText)findViewById(R.id.input_password_repeat);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         userRequestListener = this;
 
@@ -89,6 +93,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                     return;
                 }
                 User user = new User(emailInput.getText().toString(), passwordInput.getText().toString(), selectedFacultyId);
+                progressBar.setVisibility(View.VISIBLE);
                 Connector connector = Connector.getInstance();
                 connector.createUser(userRequestListener, user);
             }
@@ -134,7 +139,11 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
             Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
             RegistrationActivity.this.startActivity(mainIntent);
             RegistrationActivity.this.finish();
+        } else {
+            Toast.makeText(RegistrationActivity.this, R.string.error_user_already_exists,
+                    Toast.LENGTH_LONG).show();
         }
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -145,5 +154,6 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     public void serviceFailure(Exception e) {
         Toast.makeText(RegistrationActivity.this, R.string.error_user_already_exists,
                 Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
     }
 }

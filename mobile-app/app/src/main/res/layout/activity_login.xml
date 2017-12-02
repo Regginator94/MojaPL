@@ -80,15 +80,29 @@
         android:textColor="@android:color/white"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="160dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_rounded"
-        android:text="@string/sign_in"
-        android:textColor="@color/colorRedDark" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <Button
+            android:id="@+id/button_sign_in"
+            android:layout_width="160dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_rounded"
+            android:text="@string/sign_in"
+            android:textColor="@color/colorRedDark" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:indeterminate="true"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_sign_up"
