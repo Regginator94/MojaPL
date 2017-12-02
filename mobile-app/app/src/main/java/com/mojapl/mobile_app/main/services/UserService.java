@@ -6,8 +6,9 @@ import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.connection.IClientHTTP;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.EditProfileRequest;
 import com.mojapl.mobile_app.main.models.EmailRequest;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
@@ -59,12 +60,12 @@ public class UserService {
     public void findUser(String token, User user){
         IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
 
-        Call<LoginStatusResponse> call = client.loginUser(token, user);
-        call.enqueue(new Callback<LoginStatusResponse>() {
+        Call<StatusResponse> call = client.loginUser(token, user);
+        call.enqueue(new Callback<StatusResponse>() {
 
             @Override
-            public void onResponse(Call<LoginStatusResponse> call, Response<LoginStatusResponse> response) {
-                LoginStatusResponse responseBody = response.body();
+            public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                StatusResponse responseBody = response.body();
                 if (responseBody == null) {
                     userRequestListener.serviceFailure(new Exception());
                     return;
@@ -77,7 +78,7 @@ public class UserService {
             }
 
             @Override
-            public void onFailure(Call<LoginStatusResponse> call, Throwable t) {
+            public void onFailure(Call<StatusResponse> call, Throwable t) {
                 if (Config.DEBUG) {
                     Log.e(TAG + " error", t.toString());
                 }
@@ -89,12 +90,12 @@ public class UserService {
     public void resetPassword(EmailRequest emailRequest){
         IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
 
-        Call<LoginStatusResponse> call = client.resetPassword(emailRequest);
-        call.enqueue(new Callback<LoginStatusResponse>() {
+        Call<StatusResponse> call = client.resetPassword(emailRequest);
+        call.enqueue(new Callback<StatusResponse>() {
 
             @Override
-            public void onResponse(Call<LoginStatusResponse> call, Response<LoginStatusResponse> response) {
-                LoginStatusResponse responseBody = response.body();
+            public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                StatusResponse responseBody = response.body();
                 if (responseBody == null) {
                     userRequestListener.serviceFailure(new Exception());
                     return;
@@ -107,7 +108,37 @@ public class UserService {
             }
 
             @Override
-            public void onFailure(Call<LoginStatusResponse> call, Throwable t) {
+            public void onFailure(Call<StatusResponse> call, Throwable t) {
+                if (Config.DEBUG) {
+                    Log.e(TAG + " error", t.toString());
+                }
+                userRequestListener.serviceFailure(new Exception());
+            }
+        });
+    }
+
+    public void editProfile(String token, EditProfileRequest editProfileRequest){
+        IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
+
+        Call<StatusResponse> call = client.editProfile(token, editProfileRequest);
+        call.enqueue(new Callback<StatusResponse>() {
+
+            @Override
+            public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                StatusResponse responseBody = response.body();
+                if (responseBody == null) {
+                    userRequestListener.serviceFailure(new Exception());
+                    return;
+                }
+                if (Config.DEBUG){
+                    Log.d(TAG, call.toString());
+                    Log.d(TAG, responseBody.toString());
+                }
+                userRequestListener.serviceSuccess(responseBody);
+            }
+
+            @Override
+            public void onFailure(Call<StatusResponse> call, Throwable t) {
                 if (Config.DEBUG) {
                     Log.e(TAG + " error", t.toString());
                 }

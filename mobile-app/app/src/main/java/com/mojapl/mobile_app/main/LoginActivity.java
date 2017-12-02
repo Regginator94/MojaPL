@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
@@ -72,7 +72,7 @@ public class LoginActivity extends Activity implements UserRequestListener {
     }
 
     @Override
-    public void serviceSuccess(LoginStatusResponse response) {
+    public void serviceSuccess(StatusResponse response) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("LoginData", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("token", response.getToken());

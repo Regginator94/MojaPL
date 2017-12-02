@@ -3,6 +3,7 @@ package com.mojapl.mobile_app.main.connection;
 import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.EditProfileRequest;
 import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.User;
 import com.mojapl.mobile_app.main.services.EventsService;
@@ -67,6 +68,11 @@ public class Connector {
     public void resetPassword(UserRequestListener userRequestListener, EmailRequest emailRequest) {
         UserService userService = new UserService(userRequestListener);
         userService.resetPassword(emailRequest);
+    }
+
+    public void editProfile(UserRequestListener userRequestListener, String token, EditProfileRequest editProfileRequest) {
+        UserService userService = new UserService(userRequestListener);
+        userService.editProfile(token, editProfileRequest);
     }
 
     public Retrofit getRetrofit() {

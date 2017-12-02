@@ -2,7 +2,7 @@ package com.mojapl.mobile_app.main.models;
 
 import com.google.gson.annotations.Expose;
 
-public class LoginStatusResponse {
+public class StatusResponse {
 
     @Expose
     private Boolean status;
@@ -16,14 +16,14 @@ public class LoginStatusResponse {
     @Expose
     private String email;
 
-    public LoginStatusResponse() {
+    public StatusResponse() {
         this.status = false;
         this.token = "";
         this.userId = null;
         this.email = null;
     }
 
-    public LoginStatusResponse(Boolean status, String token, Long userId, String email) {
+    public StatusResponse(Boolean status, String token, Long userId, String email) {
         this.status = status;
         this.token = token;
         this.userId = userId;

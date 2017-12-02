@@ -12,7 +12,7 @@ import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
 import com.mojapl.mobile_app.main.models.EmailRequest;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements UserRequestListener {
@@ -56,7 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserReq
     }
 
     @Override
-    public void serviceSuccess(LoginStatusResponse response) {
+    public void serviceSuccess(StatusResponse response) {
         if (response.getStatus()) {
             Toast.makeText(ForgotPasswordActivity.this, R.string.message_email_with_reset_password_was_sent,
                     Toast.LENGTH_LONG).show();

@@ -1,8 +1,9 @@
 package com.mojapl.mobile_app.main.connection;
 
+import com.mojapl.mobile_app.main.models.EditProfileRequest;
 import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.Event;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
@@ -13,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface IClientHTTP {
@@ -29,8 +31,11 @@ public interface IClientHTTP {
     Call<RegistrationStatusResponse> createUser(@Body User user);
 
     @POST("/login")
-    Call<LoginStatusResponse> loginUser(@Header("token") String token, @Body User user);
+    Call<StatusResponse> loginUser(@Header("token") String token, @Body User user);
 
     @POST("/passwordRepeater")
-    Call<LoginStatusResponse> resetPassword(@Body EmailRequest emai);
+    Call<StatusResponse> resetPassword(@Body EmailRequest emailRequest);
+
+    @PUT("/modifyUser")
+    Call<StatusResponse> editProfile(@Header("token") String token, @Body EditProfileRequest editProfileRequest);
 }
