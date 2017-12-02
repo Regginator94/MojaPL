@@ -12,8 +12,10 @@ exports.getData = function() {
         $ = cheerio.load(content);
         var items = [];
         var plItems = [];
+        console.log(content);
         $('.Item Filterable FilterStudent FilterCandidate FilterPhD').each(function(i, elem) {
-        	items[i] = $(this).html();
+            items[i] = $(this).html();
+
         	$ = cheerio.load(items[i]);
 	        var title = ($('h3').text());
 	        var preview = ($('.Preview').text());
@@ -26,8 +28,7 @@ exports.getData = function() {
                 var href = '';
             }	       
 	        var p = new PLItem(title, preview, date, href);
-	        plItems.push(p);
+            plItems.push(p);
         });
-        console.log(plItems);
     });
 }

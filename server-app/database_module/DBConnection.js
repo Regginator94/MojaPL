@@ -63,6 +63,15 @@ exports.getNewsByOrganisationFilter = function(response, token) {
   }
 }
 
+exports.getNewsBySearch = function(response, token, regex){
+  if(authenticateUser(response, token)){ 
+    var user = decodeUserToken(token);
+    NewsGetters.getNewsBySearch(connection, response, user.id, regex);
+  } else{
+    tokenIsRequiredResponse(response);
+  }    
+}
+
 exports.addUser = function(response, request){
 	UserRegistration.addUser(connection, response, request);
 }

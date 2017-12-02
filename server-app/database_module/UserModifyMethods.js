@@ -25,7 +25,6 @@ exports.changeEmail = function(connection, response, email, userId){
 }
 
 exports.changePassword = function(connection, response, password, userId){
-    console.log(password+'PASSS');
     const updateQuery = 'UPDATE users SET U_PASSWORD ="'+password+'" WHERE U_ID ='+userId;
     connection.query(updateQuery, function(err, result, fields){
 		if(err){
@@ -47,7 +46,6 @@ exports.changePassword = function(connection, response, password, userId){
 
 exports.passwordRepeater = function(connection, response, request) {
     const email = request.body.email;
-    const userId = request.body.id;
     const query = "SELECT EXISTS(SELECT * FROM users WHERE U_EMAIL LIKE '"+email+"')";
     const newPassword = generatePassword(8, false);
     connection.query(query, function (err, result, fields) {
@@ -59,7 +57,7 @@ exports.passwordRepeater = function(connection, response, request) {
                 message:'User not exists in data base.'
             })
         } else{
-            const updateQuery = 'UPDATE users SET U_PASSWORD ="'+newPassword+'" WHERE U_ID ='+userId;
+            const updateQuery = 'UPDATE users SET U_PASSWORD ="'+newPassword+'" WHERE U_EMAIL ="'+email+'"';
             connection.query(updateQuery, function(err, result, fields){
                 if(err){
                     throw err;

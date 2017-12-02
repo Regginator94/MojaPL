@@ -30,6 +30,10 @@ app.get('/dataByOrganisation', function(request, response) {
 	DBConnection.getNewsByOrganisationFilter(response, request.headers.token);
 });
 
+app.get('/dataByRegex', function(request, response) {
+	DBConnection.getNewsBySearch(response, request.headers.token, request.query.regex);
+});
+
 app.post('/createUser', function(request, response){
  	DBConnection.addUser(response, request);
 });
@@ -65,11 +69,12 @@ setInterval(function () {
 	FBDownloader.getData('klubfuturysta',201,2);
 	FBDownloader.getData('studentradiozak',301,3);
 	FBDownloader.getData('finestrapizzeria',402,4);
+	TwitterDownloader.updateTweets('888mhz',301,3);
 	PLDownloader.getData();
  }, 3000000);
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-  //Radio Zak Tweets dd
-  TwitterDownloader.updateTweets('888mhz',301,3);
+
+
 });
