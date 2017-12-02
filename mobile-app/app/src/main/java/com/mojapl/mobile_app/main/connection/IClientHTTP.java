@@ -1,5 +1,6 @@
 package com.mojapl.mobile_app.main.connection;
 
+import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.LoginStatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
@@ -29,4 +30,7 @@ public interface IClientHTTP {
 
     @POST("/login")
     Call<LoginStatusResponse> loginUser(@Header("token") String token, @Body User user);
+
+    @POST("/passwordRepeater")
+    Call<LoginStatusResponse> resetPassword(@Body EmailRequest emai);
 }

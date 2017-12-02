@@ -6,6 +6,7 @@ import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.connection.IClientHTTP;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.LoginStatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
@@ -59,6 +60,36 @@ public class UserService {
         IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
 
         Call<LoginStatusResponse> call = client.loginUser(token, user);
+        call.enqueue(new Callback<LoginStatusResponse>() {
+
+            @Override
+            public void onResponse(Call<LoginStatusResponse> call, Response<LoginStatusResponse> response) {
+                LoginStatusResponse responseBody = response.body();
+                if (responseBody == null) {
+                    userRequestListener.serviceFailure(new Exception());
+                    return;
+                }
+                if (Config.DEBUG){
+                    Log.d(TAG, call.toString());
+                    Log.d(TAG, responseBody.toString());
+                }
+                userRequestListener.serviceSuccess(responseBody);
+            }
+
+            @Override
+            public void onFailure(Call<LoginStatusResponse> call, Throwable t) {
+                if (Config.DEBUG) {
+                    Log.e(TAG + " error", t.toString());
+                }
+                userRequestListener.serviceFailure(new Exception());
+            }
+        });
+    }
+
+    public void resetPassword(EmailRequest emailRequest){
+        IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
+
+        Call<LoginStatusResponse> call = client.resetPassword(emailRequest);
         call.enqueue(new Callback<LoginStatusResponse>() {
 
             @Override

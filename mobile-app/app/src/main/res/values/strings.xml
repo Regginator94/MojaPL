@@ -28,4 +28,5 @@
     <string name="label_remind_password">Przypomnij hasło</string>
     <string name="error_invalidate_email">Nieprawidłowo wpisany email!</string>
     <string name="error_invalidate_password">Hasło musi mieć co najmniej 6 znaków, w tym jedną cyfrę, jedną małą i jedną wielką literę.</string>
+    <string name="message_email_with_reset_password_was_sent">Wysłano email z tymczasowym hasłem.</string>
 </resources>

@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
+import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.LoginStatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 
@@ -35,10 +37,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserReq
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-                // request to api
-//                User user = new User(emailInput.getText().toString(), passwordInput.getText().toString(), selectedFacultyId);
-//                Connector connector = Connector.getInstance();
-//                connector.createUser(userRequestListener, user);
+                EmailRequest emailRequest = new EmailRequest(emailInput.getText().toString());
+                Connector connector = Connector.getInstance();
+                connector.resetPassword(userRequestListener, emailRequest);
             }
         });
     }
@@ -52,18 +53,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserReq
 
     @Override
     public void serviceSuccess(RegistrationStatusResponse response) {
-        //handle response
-//        if (response.getStatus()) {
-//            Toast.makeText(EditProfileActivity.this, getString(R.string.message_registration_successful),
-//                    Toast.LENGTH_LONG).show();
-//            Intent mainIntent = new Intent(EditProfileActivity.this, MainActivity.class);
-//            EditProfileActivity.this.startActivity(mainIntent);
-//            EditProfileActivity.this.finish();
-//        }
     }
 
     @Override
     public void serviceSuccess(LoginStatusResponse response) {
+        if (response.getStatus()) {
+            Toast.makeText(ForgotPasswordActivity.this, R.string.message_email_with_reset_password_was_sent,
+                    Toast.LENGTH_LONG).show();
+            Intent mainIntent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+            ForgotPasswordActivity.this.startActivity(mainIntent);
+            ForgotPasswordActivity.this.finish();
+        } else {
+            Toast.makeText(ForgotPasswordActivity.this, R.string.error_sending_email_failed,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
