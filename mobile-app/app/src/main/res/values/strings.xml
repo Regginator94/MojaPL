@@ -26,4 +26,6 @@
     <string name="send_email_with_new_password">Wyślij email</string>
     <string name="error_sending_email_failed">Błąd! Przypominanie hasła nie zakończyło się pomyślnie.</string>
     <string name="label_remind_password">Przypomnij hasło</string>
+    <string name="error_invalidate_email">Nieprawidłowo wpisany email!</string>
+    <string name="error_invalidate_password">Hasło musi mieć co najmniej 6 znaków, w tym jedną cyfrę, jedną małą i jedną wielką literę.</string>
 </resources>

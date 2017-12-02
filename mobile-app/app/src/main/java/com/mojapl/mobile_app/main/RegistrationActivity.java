@@ -28,6 +28,9 @@ import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, UserRequestListener {
 
+    private final static String REGEX_PASSWORD = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}";
+    private final static String REGEX_EMAIL = "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
     private UserRequestListener userRequestListener;
 
     private Long selectedFacultyId;
@@ -65,6 +68,16 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!emailInput.getText().toString().matches(REGEX_EMAIL)) {
+                    Toast.makeText(RegistrationActivity.this, R.string.error_invalidate_email,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!passwordInput.getText().toString().matches(REGEX_PASSWORD)) {
+                    Toast.makeText(RegistrationActivity.this, R.string.error_invalidate_password,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!passwordInput.getText().toString().equals(passwordRepeatInput.getText().toString())) {
                     Toast.makeText(RegistrationActivity.this, R.string.error_string_dont_match_each_other,
                             Toast.LENGTH_LONG).show();

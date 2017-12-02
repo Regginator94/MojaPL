@@ -15,6 +15,9 @@ import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 
 public class EditProfileActivity extends AppCompatActivity implements UserRequestListener {
 
+    private final static String REGEX_PASSWORD = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}";
+    private final static String REGEX_EMAIL = "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
     private UserRequestListener userRequestListener;
 
     @Override
@@ -36,6 +39,11 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
                             Toast.LENGTH_LONG).show();
                     return;
                 }
+                if (!emailInput.getText().toString().matches(REGEX_EMAIL)) {
+                    Toast.makeText(EditProfileActivity.this, R.string.error_invalidate_email,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 // request to api
 //                User user = new User(emailInput.getText().toString(), passwordInput.getText().toString(), selectedFacultyId);
 //                Connector connector = Connector.getInstance();
@@ -49,6 +57,11 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
             public void onClick(View v) {
                 if (passwordInput.getText().toString().isEmpty()) {
                     Toast.makeText(EditProfileActivity.this, R.string.error_empty_form_fields,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!passwordInput.getText().toString().matches(REGEX_PASSWORD)) {
+                    Toast.makeText(EditProfileActivity.this, R.string.error_invalidate_password,
                             Toast.LENGTH_LONG).show();
                     return;
                 }
