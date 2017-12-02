@@ -6,6 +6,7 @@ const UserLoginMethods = require('./UserLoginMethods');
 const UserRegistration = require('./UserRegistration');
 const FiltersManagement = require('./FiltersManagement');
 const UserModel = require('./../objects/UserModel');
+const UserModifyMethods = require('./UserModifyMethods');
 
 var secretKey = 'adssad1';
 
@@ -81,6 +82,31 @@ exports.updateFilters = function(response, request){
   } else{
     tokenIsRequiredResponse(response);
   } 
+}
+
+exports.changeEmail = function(response, request){
+  const token = request.headers.token;
+  if(authenticateUser(response, token)){
+    var user = decodeUserToken(token);
+    UserModifyMethods.changeEmail(connection, response, request.body.email, user.id);
+  } else{
+    tokenIsRequiredResponse(response);
+  } 
+}
+
+exports.changePassword = function(response, request){
+  const token = request.headers.token;
+  if(authenticateUser(response, token)){
+    var user = decodeUserToken(token);
+    UserModifyMethods.changePassword(connection, response, request.body.password, user.id);
+  } else{
+    tokenIsRequiredResponse(response);
+  } 
+
+}
+
+exports.passwordRepeater = function(response, request){
+  UserModifyMethods.passwordRepeater(connection, response, request);
 }
 
 function authenticateUser(response, token){

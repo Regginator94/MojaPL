@@ -22,6 +22,8 @@
     "fb": "^2.0.0",
     "jsonwebtoken": "^8.1.0",
     "mysql": "^2.15.0",
+    "nodemailer": "^4.4.0",
+    "password-generator": "^2.2.0",
     "request": "^2.83.0",
     "tinyreq": "^3.2.6",
     "twitter": "^1.7.1",

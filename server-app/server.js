@@ -46,6 +46,18 @@ app.put('/updateFilters', function(request, response){
 	DBConnection.updateFilters(response, request);
 })
 
+app.put('/modifyUser', function(request, response){
+	if(request.body.email != null){
+		DBConnection.changeEmail(response, request);
+	} else if(request.body.password != null) {
+		DBConnection.changePassword(response, request);
+	}
+})
+
+app.post('/passwordRepeater', function(request, response){
+	DBConnection.passwordRepeater(response, request);
+})
+
 setInterval(function () {	  
 	console.log("DATA UPDATE.");
 	FBDownloader.getData('Politechnika.Lodzka',1,1);
@@ -58,6 +70,6 @@ setInterval(function () {
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-  //Radio Zak Tweets
+  //Radio Zak Tweets dd
   TwitterDownloader.updateTweets('888mhz',301,3);
 });
