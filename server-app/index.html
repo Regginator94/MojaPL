@@ -14,53 +14,100 @@
 
 <div class="panel panel-info">
 	<div class="panel-heading">User Login API</div>
-		<div class="panel-body">
-			<div class="panel panel-success">
-				<div class="panel-heading">Rejestracja</div>
-				<div class="panel-body">
-					<h4>Path:  /createUser  POST METHOD</h4>
-					<h5>Params:</h5>
-					<p>email</p>
-					<p>password</p>
-					<p>facultyId</p>
-					<h5>Sample response if correct:</h5>
-					<p>{
-						"status": true,
-						"message": "User created"
-					}</p>
-					<h5>Sample response if incorrect:</h5>
-					<p>{
-						"status": false,
-						"message": "User already exists"
-					}</p>
-				</div>
-			</div>			
-			<div class="panel panel-success">
-				<div class="panel-heading">Login</div>
-				<div class="panel-body">
-					<h4>Path:  /login  POST METHOD</h4>
-					<h5>Params:</h5>
-					<p>email</p>
-					<p>password</p>
-					<h5>Lub zamiast email, password można przesłać tylko token w headerze</h5>
-					<h5>Headers:</h5>
-					<p>token</p>
-					<h5>Sample response if correct:</h5>
-					<p>{
-						"status": true,
-						"userId": 191,
-						"email": "Robert",
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVX0lEIjoxOTEsIlVfRU1BSUwiOiJSb2JlcnQiLCJVX1BBU1NXT1JEIjoiMTIzIiwiVV9DUkVBVEVfREFURSI6IjIwMTctMTEtMTVUMTY6MDU6NDYuMDAwWiIsIlVfTU9ESUZZX0RBVEUiOm51bGwsIlVfREVMRVRFX0RBVEUiOm51bGwsIlVfTEFTVF9MT0dJTl9EQVRFIjpudWxsLCJVX1RPS0VOIjpudWxsLCJpYXQiOjE1MTEwMjI4MjksImV4cCI6MTUxMTYyNzYyOX0.v_h_6zeHRcNXmyCwaFdhV13pliiWAZPUXNt-qt9W4rw"
-					}</p>
-					<h5>Sample response if incorrect:</h5>
-					<p>{
-						"status": false,
-						"token": ""
-					}</p>
-				</div>
-			</div>	
-		</div>
-    </div>
+	<div class="panel-body">
+		<div class="panel panel-success">
+			<div class="panel-heading">Rejestracja</div>
+			<div class="panel-body">
+				<h4>Path:  /createUser  POST METHOD</h4>
+				<h5>Params:</h5>
+				<p>email</p>
+				<p>password</p>
+				<p>facultyId</p>
+				<h5>Sample response if correct:</h5>
+				<p>{
+					"status": true,
+					"message": "User created"
+				}</p>
+				<h5>Sample response if incorrect:</h5>
+				<p>{
+					"status": false,
+					"message": "User already exists"
+				}</p>
+			</div>
+		</div>			
+		<div class="panel panel-success">
+			<div class="panel-heading">Login</div>
+			<div class="panel-body">
+				<h4>Path:  /login  POST METHOD</h4>
+				<h5>Params:</h5>
+				<p>email</p>
+				<p>password</p>
+				<h5>Lub zamiast email, password można przesłać tylko token w headerze</h5>
+				<h5>Headers:</h5>
+				<p>token</p>
+				<h5>Sample response if correct:</h5>
+				<p>{
+					"status": true,
+					"userId": 191,
+					"email": "Robert",
+					"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVX0lEIjoxOTEsIlVfRU1BSUwiOiJSb2JlcnQiLCJVX1BBU1NXT1JEIjoiMTIzIiwiVV9DUkVBVEVfREFURSI6IjIwMTctMTEtMTVUMTY6MDU6NDYuMDAwWiIsIlVfTU9ESUZZX0RBVEUiOm51bGwsIlVfREVMRVRFX0RBVEUiOm51bGwsIlVfTEFTVF9MT0dJTl9EQVRFIjpudWxsLCJVX1RPS0VOIjpudWxsLCJpYXQiOjE1MTEwMjI4MjksImV4cCI6MTUxMTYyNzYyOX0.v_h_6zeHRcNXmyCwaFdhV13pliiWAZPUXNt-qt9W4rw"
+				}</p>
+				<h5>Sample response if incorrect:</h5>
+				<p>{
+					"status": false,
+					"token": ""
+				}</p>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading">User Modify API</div>
+	<div class="panel-body">
+		<div class="panel panel-success">
+			<div class="panel-heading">Zmiana hasła lub adresu a-mail</div>
+			<div class="panel-body">
+				<h4>Path:  /modifyUser  PUT METHOD</h4>
+				<h5>Headers:</h5>
+				<p>token</p>
+				<h5>Params:</h5>
+				<p>email</p>
+				<p> or </p>
+				<p>password</p>
+				<h5>Sample response if correct:</h5>
+				<p>{
+					"status": true,
+					"message": "Password change successed"
+				}</p>
+				<h5>Sample response if incorrect:</h5>
+				<p>{
+					"status": false,
+					"message": "Password change failed."
+				}</p>
+			</div>
+		</div>			
+		<div class="panel panel-success">
+			<div class="panel-heading">Przypomnienie hasła</div>
+			<div class="panel-body">
+				<h4>Path:  /passwordRepeater  POST METHOD</h4>
+				<h5>Params:</h5>
+				<p>email</p>
+				<h5>Sample response if correct:</h5>
+				<p>{
+					"status": true,
+					"message": "Email change successed"				
+				}</p>
+				<h5>Sample response if incorrect:</h5>
+				<p>{
+					"status": false,
+					"message": "User not exists in data base."
+				}</p>
+			</div>
+		</div>	
+	</div>
+</div>
+
 <div class="panel panel-info">
 	<div class="panel-heading">Data getters</div>
 		<div class="panel-body">
@@ -125,6 +172,37 @@
 					}</p>
 				</div>
 			</div>			
+			<div class="panel panel-success">
+				<div class="panel-heading">Dynamiczne wyszukiwania po regexie</div>
+				<div class="panel-body">		
+					<h4>Path: /dataByRegex  GET METHOD</h4>
+					<h5>Headers:</h5>
+					<p>token</p>
+					<h5>Params:</h5>
+					<p>regex</p>
+					<h5>Sample response if correct:</h5>
+					<p>[
+						{
+							"id": 117561,
+							"organisationId": 402,
+							"categoryId": 4,
+							"content": "Uwaga uwaga mała pomyłka okazało się, że dania włoskie można u nas zamawiać aż do niedzieli :-) Od następnego tygodnia wchodzą już normalnie dania dnia :-)\n\nPrzypominam o wydarzeniu, w następny wtorek będziemy grali w Mortal Kombat X 19:00 - 22:00\n\nZapraszam wszystkich zainteresowanych do lokalu.",
+							"title": null,
+							"imageUrl": null,
+							"createDate": "2017-11-18T18:14:23.000Z",
+							"startDate": "2017-11-17T08:25:57.000Z",
+							"url": "https://www.facebook.com/finestrapizzeria/posts/1734905753196094",
+							"fbPost": "true",
+							"organisationName": "Pizzeria Finestra",
+							"tweet": "false"
+						},.... </p>
+					<h5>Sample response if incorrect:</h5>	
+					<p>{
+						"status": 503,
+						"message": "No data for those filters."
+					}</p>
+				</div>
+			</div>	
 </div>
 <div class="panel panel-info">
 	<div class="panel-heading">Data getters</div>

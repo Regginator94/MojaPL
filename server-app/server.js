@@ -77,10 +77,12 @@ setInterval(function () {
 	FBDownloader.getData('Wydzial.Chemiczny',4,1);
 	FBDownloader.getData('FTIMS.P.Lodz',8,1);
 	TwitterDownloader.updateTweets('888mhz',301,3);
+	TwitterDownloader.updateTweets('p_lodz_pl',1,1);
+	TwitterDownloader.updateTweets('BibliotekaPL',312,3);
+	TwitterDownloader.updateTweets('ZatokaSportu',311,3);	
 	PLDownloader.getData();
- }, 3000000);
+ }, 1000000);
 
 http.listen(app.get('port'), function() {
   console.log('Serwer został uruchomiony na porcie', app.get('port'));
-  
 });

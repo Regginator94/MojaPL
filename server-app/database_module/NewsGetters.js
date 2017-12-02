@@ -11,7 +11,6 @@ exports.getNewsByOrgs = function(connection, response, userId){
                     status:503,
                     message:'Data base error'
                 });
-	    	console.log(err);
 	    	throw err;
 	    } 
 	    else{
