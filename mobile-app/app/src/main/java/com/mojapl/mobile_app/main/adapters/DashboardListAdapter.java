@@ -17,7 +17,12 @@ import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.models.Event;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdapter.ViewHolder> implements View.OnClickListener {
 
@@ -25,11 +30,6 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
     private Context mContext;
     private int expandedPosition = -1;
     private boolean isCollapsed = true;
-
-    public void setItems(List<Event> eventList) {
-        this.mEventList = eventList;
-        notifyDataSetChanged();
-    }
 
     public DashboardListAdapter(Context context, List<Event> events) {
         mContext = context;
@@ -49,44 +49,13 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.date.setText(mEventList.get(position).getStartDate());
-//        String html = "<a href=\""+mEventList.get(position).getUrl()+"\">LINK</a>";
         String html = "Link do źródła: " + mEventList.get(position).getUrl();
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
         holder.href.setClickable(true);
         holder.href.setText(html);
         holder.href.setMovementMethod(LinkMovementMethod.getInstance());
         holder.organisationName.setText(mEventList.get(position).getOrganisationName());
 
-        TextView myTextView = holder.getTitle();
-        if (mEventList.get(position).isFbPost()) {
-            holder.image.setImageResource(R.drawable.fb_logo);
-
-            myTextView.setMaxLines(2);
-            String content = mEventList.get(position).getContent();
-            holder.title.setText(content);
-
-            holder.content.setText(mEventList.get(position).getContent());
-        } else if (mEventList.get(position).isTweet()) {
-            holder.image.setImageResource(R.drawable.tweet_logo);
-
-            myTextView.setMaxLines(2);
-            String content = mEventList.get(position).getContent();
-            holder.title.setText(content);
-
-            holder.content.setText(mEventList.get(position).getContent());
-        } else {
-            Picasso.with(mContext).load(mEventList.get(position).getImageUrl()).into(holder.image);
-            myTextView.setMaxLines(3);
-            holder.title.setText(mEventList.get(position).getTitle());
-            holder.content.setText(mEventList.get(position).getContent());
-        }
-
+        setDataByOrganisation(holder, position);
 
         if (mEventList.get(position).getContent() == null) {
             holder.expandedView.setVisibility(View.GONE);
@@ -106,6 +75,45 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorTransparentDarkGrey));
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorTransparentGrey));
+        }
+    }
+
+    public void setDataByOrganisation(ViewHolder holder, int position) {
+        DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+        DateFormat outputFormatter;
+        TextView myTextView = holder.getTitle();
+        if (mEventList.get(position).isFbPost()) {
+            holder.image.setImageResource(R.drawable.fb_logo);
+            outputFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+
+            myTextView.setMaxLines(2);
+            String content = mEventList.get(position).getContent();
+            holder.title.setText(content);
+
+            holder.content.setText(mEventList.get(position).getContent());
+        } else if (mEventList.get(position).isTweet()) {
+            holder.image.setImageResource(R.drawable.tweet_logo);
+            outputFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+            myTextView.setMaxLines(2);
+            String content = mEventList.get(position).getContent();
+            holder.title.setText(content);
+
+            holder.content.setText(mEventList.get(position).getContent());
+        } else {
+            outputFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            Picasso.with(mContext).load(mEventList.get(position).getImageUrl()).into(holder.image);
+            myTextView.setMaxLines(3);
+            holder.title.setText(mEventList.get(position).getTitle());
+            holder.content.setText(mEventList.get(position).getContent());
+        }
+
+
+        try {
+            Date formattedDate = inputFormatter.parse(mEventList.get(position).getStartDate());
+            String output = outputFormatter.format(formattedDate);
+            holder.date.setText(output);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
