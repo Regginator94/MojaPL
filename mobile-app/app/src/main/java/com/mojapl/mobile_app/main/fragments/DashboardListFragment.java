@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.DashboardListAdapter;
@@ -37,11 +36,13 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     private List<Event> events;
     private SharedPreferences pref;
     int SPAN_COUNT = 1;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
+
+        view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
         connectionConfig = Connector.getInstance();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -71,17 +72,24 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     @Override
     public void serviceSuccess(List<Event> events) {
         this.events = events;
-        adapter.updateList(this.events);
+
         if (events != null) {
+            view.setBackgroundResource(R.drawable.background_red_tint);
             for (int i = 0; i < events.size(); i++) {
                 eventRepository.addEvents(events.get(i), onSaveEventCallback);
             }
+
         } else {
-            Toast.makeText(getContext(), "No events in this category :(", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            Event emptyEvent = new Event();
+            emptyEvent.setTitle("W tej kategorii nie ma żadnych eventów");
+            emptyEvent.setImageUrl("https://cdn3.iconfinder.com/data/icons/emoticon-emoji/30/emoticon-sad-7-512.png");
+            this.events = new ArrayList<>();
+            this.events.add(emptyEvent);
+            view.setBackgroundResource(R.drawable.dashboard_background);
+            eventRepository.addEvents(this.events.get(0), onSaveEventCallback);
         }
 
-
+        adapter.updateList(this.events);
         dialog.hide();
     }
 

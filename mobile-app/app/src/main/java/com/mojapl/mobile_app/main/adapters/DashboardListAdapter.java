@@ -62,30 +62,44 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         holder.href.setText(html);
         holder.href.setMovementMethod(LinkMovementMethod.getInstance());
         holder.organisationName.setText(mEventList.get(position).getOrganisationName());
+
+        TextView myTextView = holder.getTitle();
         if (mEventList.get(position).isFbPost()) {
             holder.image.setImageResource(R.drawable.fb_logo);
+
+            myTextView.setMaxLines(2);
             String content = mEventList.get(position).getContent();
-            if (content.length() > 21) {
-                holder.title.setText(content.substring(0, 20) + " (...)");
-            } else {
-                holder.title.setText(content);
-            }
+            holder.title.setText(content);
+
+            holder.content.setText(mEventList.get(position).getContent());
+        } else if (mEventList.get(position).isTweet()) {
+            holder.image.setImageResource(R.drawable.tweet_logo);
+
+            myTextView.setMaxLines(2);
+            String content = mEventList.get(position).getContent();
+            holder.title.setText(content);
+
             holder.content.setText(mEventList.get(position).getContent());
         } else {
             Picasso.with(mContext).load(mEventList.get(position).getImageUrl()).into(holder.image);
+            myTextView.setMaxLines(3);
             holder.title.setText(mEventList.get(position).getTitle());
             holder.content.setText(mEventList.get(position).getContent());
         }
 
 
-        if (position == expandedPosition && isCollapsed) {
-            holder.expandedView.setVisibility(View.VISIBLE);
-            isCollapsed = false;
-        } else if (position == expandedPosition && !isCollapsed) {
+        if (mEventList.get(position).getContent() == null) {
             holder.expandedView.setVisibility(View.GONE);
-            isCollapsed = true;
         } else {
-            holder.expandedView.setVisibility(View.GONE);
+            if (position == expandedPosition && isCollapsed) {
+                holder.expandedView.setVisibility(View.VISIBLE);
+                isCollapsed = false;
+            } else if (position == expandedPosition && !isCollapsed) {
+                holder.expandedView.setVisibility(View.GONE);
+                isCollapsed = true;
+            } else {
+                holder.expandedView.setVisibility(View.GONE);
+            }
         }
 
         if (position % 2 == 0) {
@@ -93,7 +107,6 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorTransparentGrey));
         }
-
     }
 
     public void updateList(List<Event> items) {
@@ -138,5 +151,12 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
             organisationName = (TextView) itemView.findViewById(R.id.organisation);
         }
 
+        public TextView getTitle() {
+            return title;
+        }
+
+        public TextView getContent() {
+            return content;
+        }
     }
 }

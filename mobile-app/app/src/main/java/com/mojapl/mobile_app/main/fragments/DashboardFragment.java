@@ -27,6 +27,7 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
     public static final int LANDSCAPE_SPAN_COUNT = 4;
     private RecyclerView mRecyclerView;
     public static int clickPosition = -1;
+    public static boolean onCategoryClick = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +65,7 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
     @Override
     public void onItemClick(int position) {
         clickPosition = position + 1;
+        onCategoryClick = true;
         Intent intent = new Intent(getContext(), DashboardCategoryActivity.class);
         startActivity(intent);
     }
