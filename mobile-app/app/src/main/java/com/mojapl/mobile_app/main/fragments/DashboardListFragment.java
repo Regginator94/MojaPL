@@ -1,14 +1,18 @@
 package com.mojapl.mobile_app.main.fragments;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +42,8 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     int SPAN_COUNT = 1;
     View view;
 
+    ServerRequestListener self;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,8 +71,42 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         } else {
             connectionConfig.getEventsByOrganisation(this, pref.getString("token", ""));
         }
+//        connectionConfig.getEventsByRegex(this, pref.getString("token", ""), "blog");
+        self = this;
+
+        setHasOptionsMenu(true);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_with_search, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+        try {
+            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setQueryHint("Szukaj...");
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    connectionConfig.getEventsByRegex(self, pref.getString("token", ""), s);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

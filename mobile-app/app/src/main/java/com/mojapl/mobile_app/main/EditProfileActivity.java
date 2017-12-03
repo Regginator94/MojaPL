@@ -86,13 +86,6 @@ public class EditProfileActivity extends AppCompatActivity implements UserReques
     }
 
     @Override
-    public void onBackPressed() {
-        Intent mainIntent = new Intent(EditProfileActivity.this, MainActivity.class);
-        EditProfileActivity.this.startActivity(mainIntent);
-        EditProfileActivity.this.finish();
-    }
-
-    @Override
     public void serviceSuccess(RegistrationStatusResponse response) {
     }
 

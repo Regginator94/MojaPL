@@ -78,4 +78,28 @@ public class EventsService {
         });
     }
 
+    public void getEventsByRegex(String token, String regex) {
+        IClientHTTP client = connector.getRetrofit().create(IClientHTTP.class);
+
+        Call<List<Event>> call = client.getEventsByRegex(token, regex);
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                if (Config.DEBUG) {
+                    Log.d(TAG, call.toString());
+                }
+                serverRequestListener.serviceSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                if (Config.DEBUG) {
+                    Log.e(TAG + " error", t.toString());
+                }
+                serverRequestListener.serviceFailure(new Exception());
+            }
+        });
+    }
+
 }

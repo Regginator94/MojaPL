@@ -55,6 +55,11 @@ public class Connector {
         eventsService.getDataByCategory(token, categoryId);
     }
 
+    public void getEventsByRegex(ServerRequestListener serverRequestListener, String token, String regex) {
+        EventsService eventsService = new EventsService(serverRequestListener);
+        eventsService.getEventsByRegex(token, regex);
+    }
+
     public void createUser(UserRequestListener userRequestListener, User user) {
         UserService userService = new UserService(userRequestListener);
         userService.saveUser(user);

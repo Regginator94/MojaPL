@@ -26,6 +26,8 @@ public interface IClientHTTP {
     @GET("/dataByCategory")
     Call<List<Event>> getEventsByCategory(@Header("token") String token, @Query("category") int categoryId);
 
+    @GET("/dataByRegex")
+    Call<List<Event>> getEventsByRegex(@Header("token") String token, @Query("regex") String regex);
 
     @POST("/createUser")
     Call<RegistrationStatusResponse> createUser(@Body User user);
