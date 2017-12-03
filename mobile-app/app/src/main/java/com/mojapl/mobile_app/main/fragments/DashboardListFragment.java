@@ -125,7 +125,8 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
             emptyEvent.setImageUrl("https://cdn3.iconfinder.com/data/icons/emoticon-emoji/30/emoticon-sad-7-512.png");
             this.events = new ArrayList<>();
             this.events.add(emptyEvent);
-            view.setBackgroundResource(R.drawable.dashboard_background);
+            view.setBackgroundResource(R.drawable.background);
+
             eventRepository.addEvents(this.events.get(0), onSaveEventCallback);
         }
 

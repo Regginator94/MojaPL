@@ -108,13 +108,16 @@ public class DashboardListAdapter extends RecyclerView.Adapter<DashboardListAdap
         }
 
 
-        try {
-            Date formattedDate = inputFormatter.parse(mEventList.get(position).getStartDate());
-            String output = outputFormatter.format(formattedDate);
-            holder.date.setText(output);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(mEventList.size() > 1) {
+            try {
+                Date formattedDate = inputFormatter.parse(mEventList.get(position).getStartDate());
+                String output = outputFormatter.format(formattedDate);
+                holder.date.setText(output);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     public void updateList(List<Event> items) {
