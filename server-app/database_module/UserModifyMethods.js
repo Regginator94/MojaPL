@@ -1,7 +1,6 @@
 var jwt = require('jsonwebtoken');
 const generatePassword = require("password-generator");
 var secretKey = 'adssad1';
-const UserModel = require('./../objects/UserModel');
 const NodeMail = require('./NodeMail');
 
 exports.changeEmail = function(connection, response, email, userId){
