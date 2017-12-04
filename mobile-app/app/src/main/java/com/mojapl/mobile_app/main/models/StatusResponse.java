@@ -16,18 +16,28 @@ public class StatusResponse {
     @Expose
     private String email;
 
+    @Expose
+    private String lastLogin;
+
+    @Expose
+    private String userFilters;
+
     public StatusResponse() {
         this.status = false;
         this.token = "";
         this.userId = null;
         this.email = null;
+        this.lastLogin = null;
+        this.userFilters = null;
     }
 
-    public StatusResponse(Boolean status, String token, Long userId, String email) {
+    public StatusResponse(Boolean status, String token, Long userId, String email, String lastLogin, String userFilters) {
         this.status = status;
         this.token = token;
         this.userId = userId;
         this.email = email;
+        this.lastLogin = lastLogin;
+        this.userFilters = userFilters;
     }
 
     public Boolean getStatus() {
@@ -60,5 +70,21 @@ public class StatusResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(String lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getUserFilters() {
+        return userFilters;
+    }
+
+    public void setUserFilters(String userFilters) {
+        this.userFilters = userFilters;
     }
 }

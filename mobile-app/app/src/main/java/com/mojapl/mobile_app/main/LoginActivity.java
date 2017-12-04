@@ -83,6 +83,8 @@ public class LoginActivity extends Activity implements UserRequestListener {
         editor.putString("token", response.getToken());
         editor.putLong("userId", response.getUserId());
         editor.putString("email", response.getEmail());
+        editor.putString("lastLogin", response.getLastLogin());
+        editor.putString("userFilters", response.getUserFilters());
         editor.commit();
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
