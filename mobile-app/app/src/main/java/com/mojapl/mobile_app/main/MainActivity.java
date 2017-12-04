@@ -19,17 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPager mviewPager;
     ViewPagerAdapter mViewPagerAdapter;
-    private static MainActivity instance;
-
-    public static MainActivity getInstance() {
-        return instance;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initRealmDb();
-        instance = this;
         setContentView(R.layout.activity_main);
         mviewPager = (ViewPager) findViewById(R.id.pager);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());

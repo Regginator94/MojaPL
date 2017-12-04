@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,29 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     int SPAN_COUNT = 1;
     View view;
 
+    public final static String TAG = "DashboardListFragment";
+
+    int category = -1;
+
     ServerRequestListener self;
+
+    private final static String KEY = "key";
+
+    public static DashboardListFragment newInstance(final int category) {
+
+        Bundle args = new Bundle();
+        args.putInt(KEY, category);
+
+        DashboardListFragment fragment = new DashboardListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,24 +82,39 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         mRecyclerView.setAdapter(adapter);
         ButterKnife.bind(this, view);
 
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Loading..");
-        dialog.show();
-        subscribeCallbacks();
-
-        pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
-
-        if (DashboardFragment.clickPosition > 0) {
-            connectionConfig.getEventsByCategory(this, pref.getString("token", ""), DashboardFragment.clickPosition);
-        } else {
-            connectionConfig.getEventsByOrganisation(this, pref.getString("token", ""));
-        }
+        startLoading();
 //        connectionConfig.getEventsByRegex(this, pref.getString("token", ""), "blog");
-        self = this;
 
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void startLoading() {
+        if (events == null) {
+            dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Loading..");
+            dialog.show();
+
+            pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
+
+            int category = getArguments().getInt(KEY);
+
+            if (category > 0) {
+                connectionConfig.getEventsByCategory(this, pref.getString("token", ""), category);
+            } else {
+                connectionConfig.getEventsByOrganisation(this, pref.getString("token", ""));
+            }
+        } else {
+            adapter.updateList(events);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        subscribeCallbacks();
+        self = this;
     }
 
     @Override
@@ -104,20 +142,21 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
                 }
             });
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void serviceSuccess(List<Event> events) {
-        this.events = events;
+
 
         if (events != null) {
             view.setBackgroundResource(R.drawable.background_red_tint);
             for (int i = 0; i < events.size(); i++) {
                 eventRepository.addEvents(events.get(i), onSaveEventCallback);
             }
+            this.events = events;
 
         } else {
             Event emptyEvent = new Event();
@@ -159,5 +198,7 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     public void onPause() {
         super.onPause();
         dialog.dismiss();
+        onSaveEventCallback = null;
+        self = null;
     }
 }

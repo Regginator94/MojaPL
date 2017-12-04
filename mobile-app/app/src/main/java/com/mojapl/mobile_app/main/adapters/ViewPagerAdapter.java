@@ -8,13 +8,12 @@ import com.mojapl.mobile_app.main.fragments.DashboardFragment;
 import com.mojapl.mobile_app.main.fragments.DashboardListFragment;
 
 
-/**
- * Created by shkliare on 10/22/17.
- */
-
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    private FragmentManager fragmentManager;
+
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
+        this.fragmentManager = fm;
     }
 
     @Override
@@ -23,7 +22,13 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new DashboardFragment();
             case 1:
-                return new DashboardListFragment();
+
+                Fragment fragment = fragmentManager.findFragmentByTag(DashboardListFragment.TAG);
+                if (fragment == null) {
+                    fragment = DashboardListFragment.newInstance(0);
+                }
+
+                return fragment;
         }
         return null;
     }

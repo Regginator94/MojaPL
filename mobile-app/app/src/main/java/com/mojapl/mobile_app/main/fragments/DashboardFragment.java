@@ -26,7 +26,6 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
     public static final int PORTRAIT_SPAN_COUNT = 2;
     public static final int LANDSCAPE_SPAN_COUNT = 4;
     private RecyclerView mRecyclerView;
-    public static int clickPosition = -1;
     public static boolean onCategoryClick = false;
 
     @Override
@@ -64,9 +63,22 @@ public class DashboardFragment extends Fragment implements OnDashboardItemClickL
 
     @Override
     public void onItemClick(int position) {
-        clickPosition = position + 1;
-        onCategoryClick = true;
         Intent intent = new Intent(getContext(), DashboardCategoryActivity.class);
+        switch (position) {
+            case 0:
+                intent.putExtra(DashboardCategoryActivity.CATEGORY_KEY, DashboardCategoryActivity.UNIVERSITY);
+                break;
+            case 1:
+                intent.putExtra(DashboardCategoryActivity.CATEGORY_KEY, DashboardCategoryActivity.EVENTS);
+                break;
+            case 2:
+                intent.putExtra(DashboardCategoryActivity.CATEGORY_KEY, DashboardCategoryActivity.HOBBY);
+                break;
+            case 3:
+                intent.putExtra(DashboardCategoryActivity.CATEGORY_KEY, DashboardCategoryActivity.SALE);
+                break;
+        }
+        onCategoryClick = true;
         startActivity(intent);
     }
 }
