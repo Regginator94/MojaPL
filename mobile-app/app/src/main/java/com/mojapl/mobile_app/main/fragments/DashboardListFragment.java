@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -80,7 +82,7 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_with_search, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -90,6 +92,8 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
             SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             searchView.setQueryHint("Szukaj...");
+
+            final MenuItem itemSearch = menu.findItem(R.id.action_search);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
@@ -101,6 +105,28 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
                 @Override
                 public boolean onQueryTextChange(String s) {
                     return false;
+                }
+            });
+
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemSearch.setVisible(false);
+                }
+            });
+
+            MenuItemCompat.setOnActionExpandListener(itemSearch, new MenuItemCompat.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem item) {
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem item) {
+                    menu.clear();
+                    inflater.inflate(R.menu.menu_with_search, menu);
+                    onCreateOptionsMenu(menu, inflater);
+                    return true;
                 }
             });
 
