@@ -22,8 +22,8 @@ exports.getTweets = function(pageID){
 				tweets = data;
 				for(var i = 0; i < tweets.length; i++){
 						tweet = data[i];
-						var tweetUrl = 'https://twitter.com/'+screen_name+'/status/'+tweet.id;
-						tweet = new TwitterItem(tweet.created_at, '', tweet.text, tweet.id, tweetUrl, screen_name);
+						var tweetUrl = 'https://twitter.com/'+screen_name+'/status/'+tweet.id_str;
+						tweet = new TwitterItem(tweet.created_at, '', tweet.text, tweet.id_str, tweetUrl, screen_name);
 						tweetsResult.push(tweet);
 				}		
 				return resolve(tweetsResult);
