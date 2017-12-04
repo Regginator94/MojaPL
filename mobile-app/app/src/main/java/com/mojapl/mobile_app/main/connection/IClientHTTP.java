@@ -3,6 +3,7 @@ package com.mojapl.mobile_app.main.connection;
 import com.mojapl.mobile_app.main.models.EditProfileRequest;
 import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.Event;
+import com.mojapl.mobile_app.main.models.FiltersUpdateResponse;
 import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
@@ -29,6 +30,9 @@ public interface IClientHTTP {
     @GET("/dataByRegex")
     Call<List<Event>> getEventsByRegex(@Header("token") String token, @Query("regex") String regex);
 
+    @GET("/data")
+    Call<List<Event>> getNewEvents();
+
     @POST("/createUser")
     Call<RegistrationStatusResponse> createUser(@Body User user);
 
@@ -40,4 +44,7 @@ public interface IClientHTTP {
 
     @PUT("/modifyUser")
     Call<StatusResponse> editProfile(@Header("token") String token, @Body EditProfileRequest editProfileRequest);
+
+    @PUT(" /updateFilters")
+    Call<FiltersUpdateResponse> updateFilters(@Header("token") String token, @Query("filters") String filters);
 }

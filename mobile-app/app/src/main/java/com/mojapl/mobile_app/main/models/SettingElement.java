@@ -1,17 +1,23 @@
 package com.mojapl.mobile_app.main.models;
 
-/**
- * Created by Klaudia on 22.10.2017.
- */
+import io.realm.RealmObject;
 
-public class SettingElement {
+
+public class SettingElement extends RealmObject {
     private String name;
-    private  Boolean selected;
+    private Boolean selected;
+    private int organizationID;
+    private int type;
 
-
-    public SettingElement(String name, Boolean selected) {
+    public SettingElement(String name, Boolean selected, int organizationID, int type) {
         this.name = name;
         this.selected = selected;
+        this.organizationID = organizationID;
+        this.type = type;
+    }
+
+    public SettingElement(){
+
     }
 
     public String getName() {
@@ -25,4 +31,21 @@ public class SettingElement {
     public Boolean getSelected() {
         return selected;
     }
+
+    public int getOrganizationID() {
+        return organizationID;
+    }
+
+    public void setOrganizationID(int organizationID) {
+        this.organizationID = organizationID;
+    }
+
+    public void setSelected(Boolean value){
+        this.selected = value;
+    }
+
+    public int getType() {
+        return type;
+    }
+
 }

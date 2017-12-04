@@ -2,11 +2,14 @@ package com.mojapl.mobile_app.main.connection;
 
 import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
+import com.mojapl.mobile_app.main.listeners.SettingsChangeRequestListener;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
 import com.mojapl.mobile_app.main.models.EditProfileRequest;
 import com.mojapl.mobile_app.main.models.EmailRequest;
+import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.User;
 import com.mojapl.mobile_app.main.services.EventsService;
+import com.mojapl.mobile_app.main.services.SettingsService;
 import com.mojapl.mobile_app.main.services.UserService;
 
 import okhttp3.OkHttpClient;
@@ -78,6 +81,12 @@ public class Connector {
     public void editProfile(UserRequestListener userRequestListener, String token, EditProfileRequest editProfileRequest) {
         UserService userService = new UserService(userRequestListener);
         userService.editProfile(token, editProfileRequest);
+    }
+
+    public  void updateFilters(SettingsChangeRequestListener serverRequestListener, String token, String filtersList){
+        SettingsService eventsService = new SettingsService(serverRequestListener);
+        eventsService.updateFilters(token, filtersList);
+
     }
 
     public Retrofit getRetrofit() {
