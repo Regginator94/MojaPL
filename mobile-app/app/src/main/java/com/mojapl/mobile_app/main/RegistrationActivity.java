@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
@@ -28,9 +29,14 @@ import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, UserRequestListener {
 
+    private final static String REGEX_PASSWORD = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}";
+    private final static String REGEX_EMAIL = "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
     private UserRequestListener userRequestListener;
 
     private Long selectedFacultyId;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         final EditText emailInput = (EditText)findViewById(R.id.input_user);
         final EditText passwordInput = (EditText)findViewById(R.id.input_password);
         final EditText passwordRepeatInput = (EditText)findViewById(R.id.input_password_repeat);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         userRequestListener = this;
 
@@ -65,6 +72,16 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!emailInput.getText().toString().matches(REGEX_EMAIL)) {
+                    Toast.makeText(RegistrationActivity.this, R.string.error_invalidate_email,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!passwordInput.getText().toString().matches(REGEX_PASSWORD)) {
+                    Toast.makeText(RegistrationActivity.this, R.string.error_invalidate_password,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!passwordInput.getText().toString().equals(passwordRepeatInput.getText().toString())) {
                     Toast.makeText(RegistrationActivity.this, R.string.error_string_dont_match_each_other,
                             Toast.LENGTH_LONG).show();
@@ -76,6 +93,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                     return;
                 }
                 User user = new User(emailInput.getText().toString(), passwordInput.getText().toString(), selectedFacultyId);
+                progressBar.setVisibility(View.VISIBLE);
                 Connector connector = Connector.getInstance();
                 connector.createUser(userRequestListener, user);
             }
@@ -121,16 +139,21 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
             Intent mainIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
             RegistrationActivity.this.startActivity(mainIntent);
             RegistrationActivity.this.finish();
+        } else {
+            Toast.makeText(RegistrationActivity.this, R.string.error_user_already_exists,
+                    Toast.LENGTH_LONG).show();
         }
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
-    public void serviceSuccess(LoginStatusResponse response) {
+    public void serviceSuccess(StatusResponse response) {
     }
 
     @Override
     public void serviceFailure(Exception e) {
         Toast.makeText(RegistrationActivity.this, R.string.error_user_already_exists,
                 Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
     }
 }

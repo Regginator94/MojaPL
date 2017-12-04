@@ -1,8 +1,10 @@
 package com.mojapl.mobile_app.main.connection;
 
+import com.mojapl.mobile_app.main.models.EditProfileRequest;
+import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.FiltersUpdateResponse;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
@@ -21,8 +23,12 @@ public interface IClientHTTP {
     @GET("/dataByOrganisation")
     Call<List<Event>> getEventsByOrganisation(@Header("token") String token);
 
+
     @GET("/dataByCategory")
     Call<List<Event>> getEventsByCategory(@Header("token") String token, @Query("category") int categoryId);
+
+    @GET("/dataByRegex")
+    Call<List<Event>> getEventsByRegex(@Header("token") String token, @Query("regex") String regex);
 
     @GET("/data")
     Call<List<Event>> getNewEvents();
@@ -31,7 +37,13 @@ public interface IClientHTTP {
     Call<RegistrationStatusResponse> createUser(@Body User user);
 
     @POST("/login")
-    Call<LoginStatusResponse> loginUser(@Header("token") String token, @Body User user);
+    Call<StatusResponse> loginUser(@Header("token") String token, @Body User user);
+
+    @POST("/passwordRepeater")
+    Call<StatusResponse> resetPassword(@Body EmailRequest emailRequest);
+
+    @PUT("/modifyUser")
+    Call<StatusResponse> editProfile(@Header("token") String token, @Body EditProfileRequest editProfileRequest);
 
     @PUT(" /updateFilters")
     Call<FiltersUpdateResponse> updateFilters(@Header("token") String token, @Query("filters") String filters);

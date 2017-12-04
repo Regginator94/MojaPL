@@ -9,7 +9,7 @@ import android.os.Handler;
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.connection.Connector;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
-import com.mojapl.mobile_app.main.models.LoginStatusResponse;
+import com.mojapl.mobile_app.main.models.StatusResponse;
 import com.mojapl.mobile_app.main.models.RegistrationStatusResponse;
 import com.mojapl.mobile_app.main.models.User;
 
@@ -45,7 +45,7 @@ public class SplashScreenActivity extends Activity implements UserRequestListene
     }
 
     @Override
-    public void serviceSuccess(LoginStatusResponse response) {
+    public void serviceSuccess(StatusResponse response) {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {

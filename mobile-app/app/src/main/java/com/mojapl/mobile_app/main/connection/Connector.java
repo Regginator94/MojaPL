@@ -4,6 +4,8 @@ import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
 import com.mojapl.mobile_app.main.listeners.SettingsChangeRequestListener;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
+import com.mojapl.mobile_app.main.models.EditProfileRequest;
+import com.mojapl.mobile_app.main.models.EmailRequest;
 import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.User;
 import com.mojapl.mobile_app.main.services.EventsService;
@@ -56,6 +58,11 @@ public class Connector {
         eventsService.getDataByCategory(token, categoryId);
     }
 
+    public void getEventsByRegex(ServerRequestListener serverRequestListener, String token, String regex) {
+        EventsService eventsService = new EventsService(serverRequestListener);
+        eventsService.getEventsByRegex(token, regex);
+    }
+
     public void createUser(UserRequestListener userRequestListener, User user) {
         UserService userService = new UserService(userRequestListener);
         userService.saveUser(user);
@@ -64,6 +71,16 @@ public class Connector {
     public void loginUser(UserRequestListener userRequestListener, String token, User user) {
         UserService userService = new UserService(userRequestListener);
         userService.findUser(token, user);
+    }
+
+    public void resetPassword(UserRequestListener userRequestListener, EmailRequest emailRequest) {
+        UserService userService = new UserService(userRequestListener);
+        userService.resetPassword(emailRequest);
+    }
+
+    public void editProfile(UserRequestListener userRequestListener, String token, EditProfileRequest editProfileRequest) {
+        UserService userService = new UserService(userRequestListener);
+        userService.editProfile(token, editProfileRequest);
     }
 
     public  void updateFilters(SettingsChangeRequestListener serverRequestListener, String token, String filtersList){

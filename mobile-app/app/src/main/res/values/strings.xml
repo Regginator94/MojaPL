@@ -19,4 +19,16 @@
     <string name="label_logout">Wyloguj</string>
     <string name="error_user_already_exists">Użytkownik o takiej nazwie już istnieje!</string>
     <string name="confirm">ZAAKCEPTUJ ZMIANY</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="hint_type_new_email">Wpisz nowy email...</string>
+    <string name="hint_type_new_password">Wpisz nowe hasło...</string>
+    <string name="label_edit_profile">Edytuj profil</string>
+    <string name="error_profile_edition_failed">Błąd! Zmiana danych nie zakończyła się pomyślnie.</string>
+    <string name="send_email_with_new_password">Wyślij email</string>
+    <string name="error_sending_email_failed">Błąd! Przypominanie hasła nie zakończyło się pomyślnie.</string>
+    <string name="label_remind_password">Przypomnij hasło</string>
+    <string name="error_invalidate_email">Nieprawidłowo wpisany email!</string>
+    <string name="error_invalidate_password">Hasło musi mieć co najmniej 6 znaków, w tym jedną cyfrę, jedną małą i jedną wielką literę.</string>
+    <string name="message_email_with_reset_password_was_sent">Wysłano email z tymczasowym hasłem.</string>
+    <string name="message_profile_edition_successful">Zmiana danych zakończona pomyślnie.</string>
 </resources>

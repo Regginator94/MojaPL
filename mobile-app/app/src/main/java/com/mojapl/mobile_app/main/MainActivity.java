@@ -19,17 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPager mviewPager;
     ViewPagerAdapter mViewPagerAdapter;
-    private static MainActivity instance;
-
-    public static MainActivity getInstance() {
-        return instance;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initRealmDb();
-        instance = this;
         setContentView(R.layout.activity_main);
         mviewPager = (ViewPager) findViewById(R.id.pager);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -50,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.menu_settings) {
             intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.menu_edit_profile) {
+            intent = new Intent(this, EditProfileActivity.class);
             startActivity(intent);
         } else if (id == R.id.menu_logout) {
             SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);

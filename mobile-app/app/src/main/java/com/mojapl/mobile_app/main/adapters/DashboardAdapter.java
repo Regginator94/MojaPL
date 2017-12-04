@@ -1,5 +1,8 @@
 package com.mojapl.mobile_app.main.adapters;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     private List<DashboardItem> mItemList;
     private OnDashboardItemClickListener mOnItemClickListener;
+    Activity mActivity;
+
+    int i = 0;
+
+    public DashboardAdapter(Activity activity) {
+        this.mActivity = activity;
+    }
 
     public void setItems(List<DashboardItem> items) {
         this.mItemList = items;
@@ -28,8 +38,32 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dashboard, parent, false);
+
+        final GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+
+        if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            params.height = (parent.getMeasuredHeight() / 2) - 4;
+        } else {
+            if ((mActivity.getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+                params.height = (parent.getHeight() / 2) - 4;
+            } else {
+                params.height = parent.getMeasuredHeight() - 4;
+            }
+        }
+
+        view.setLayoutParams(params);
+
+        if (i == 1 || i == 2) {
+            view.setBackgroundResource(R.color.colorTransparentDarkRed);
+        } else {
+            view.setBackgroundResource(R.color.colorTransparentRed);
+        }
+
+        i += 1;
+
         return new ViewHolder(view);
     }
 

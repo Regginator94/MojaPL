@@ -1,17 +1,23 @@
 package com.mojapl.mobile_app.main.fragments;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.DashboardListAdapter;
@@ -27,7 +33,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 
-public class DashboardListFragment extends Fragment implements ServerRequestListener, IEventsCallbeck {
+public class DashboardListFragment extends Fragment implements ServerRequestListener, IEventsCallback {
     Connector connectionConfig;
     private ProgressDialog dialog;
     private RecyclerView mRecyclerView;
@@ -37,11 +43,37 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     private List<Event> events;
     private SharedPreferences pref;
     int SPAN_COUNT = 1;
+    View view;
+
+    public final static String TAG = "DashboardListFragment";
+
+    int category = -1;
+
+    ServerRequestListener self;
+
+    private final static String KEY = "key";
+
+    public static DashboardListFragment newInstance(final int category) {
+
+        Bundle args = new Bundle();
+        args.putInt(KEY, category);
+
+        DashboardListFragment fragment = new DashboardListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
+
+        view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
         connectionConfig = Connector.getInstance();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -52,36 +84,117 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         mRecyclerView.setAdapter(adapter);
         ButterKnife.bind(this, view);
 
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Loading..");
-        dialog.show();
-        subscribeCallbacks();
+        startLoading();
+//        connectionConfig.getEventsByRegex(this, pref.getString("token", ""), "blog");
 
-        pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
-
-        if (DashboardFragment.clickPosition > 0) {
-            connectionConfig.getEventsByCategory(this, pref.getString("token", ""), DashboardFragment.clickPosition);
-        } else {
-            connectionConfig.getEventsByOrganisation(this, pref.getString("token", ""));
-        }
+        setHasOptionsMenu(true);
 
         return view;
     }
 
+    private void startLoading() {
+        if (events == null) {
+            dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Loading..");
+            dialog.show();
+
+            pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
+
+            int category = getArguments().getInt(KEY);
+
+            if (category > 0) {
+                connectionConfig.getEventsByCategory(this, pref.getString("token", ""), category);
+            } else {
+                connectionConfig.getEventsByOrganisation(this, pref.getString("token", ""));
+            }
+        } else {
+            adapter.updateList(events);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        subscribeCallbacks();
+        self = this;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_with_search, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+        try {
+            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setQueryHint("Szukaj...");
+
+            final MenuItem itemSearch = menu.findItem(R.id.action_search);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    connectionConfig.getEventsByRegex(self, pref.getString("token", ""), s);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemSearch.setVisible(false);
+                }
+            });
+
+            MenuItemCompat.setOnActionExpandListener(itemSearch, new MenuItemCompat.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem item) {
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem item) {
+                    menu.clear();
+                    inflater.inflate(R.menu.menu_with_search, menu);
+                    onCreateOptionsMenu(menu, inflater);
+                    return true;
+                }
+            });
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void serviceSuccess(List<Event> events) {
-        this.events = events;
-        adapter.updateList(this.events);
+
+
         if (events != null) {
             for (int i = 0; i < events.size(); i++) {
                 eventRepository.addEvents(events.get(i), onSaveEventCallback);
             }
+            this.events = events;
+
         } else {
-            Toast.makeText(getContext(), "No events in this category :(", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            Event emptyEvent = new Event();
+            emptyEvent.setTitle("W tej kategorii nie ma żadnych eventów");
+            emptyEvent.setImageUrl("https://cdn3.iconfinder.com/data/icons/emoticon-emoji/30/emoticon-sad-7-512.png");
+            this.events = new ArrayList<>();
+            this.events.add(emptyEvent);
+
+            eventRepository.addEvents(this.events.get(0), onSaveEventCallback);
         }
 
-
+        adapter.updateList(this.events);
         dialog.hide();
     }
 
@@ -110,5 +223,7 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
     public void onPause() {
         super.onPause();
         dialog.dismiss();
+        onSaveEventCallback = null;
+        self = null;
     }
 }
