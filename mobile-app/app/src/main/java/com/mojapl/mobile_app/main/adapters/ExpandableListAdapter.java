@@ -12,25 +12,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
+import com.mojapl.mobile_app.main.listeners.OnFilterItemClickListener;
 import com.mojapl.mobile_app.main.models.SettingElement;
 
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Klaudia on 22.10.2017.
- */
-
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> listHeaders;
     private HashMap<String, List<SettingElement>> listChild;
+    private OnFilterItemClickListener listener;
 
     public ExpandableListAdapter(Context context, List<String> listHeaders, HashMap<String, List<SettingElement>> listChild) {
         this.context = context;
         this.listHeaders = listHeaders;
         this.listChild = listChild;
     }
+    public ExpandableListAdapter(Context context, List<String> listHeaders, HashMap<String, List<SettingElement>> listChild, OnFilterItemClickListener listener) {
+        this.context = context;
+        this.listHeaders = listHeaders;
+        this.listChild = listChild;
+        this.listener = listener;
+    }
+
 
 
     @Override
@@ -101,14 +106,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.selected);
 
+      
         txtListChild.setText(childElement.getName());
         checkBox.setChecked(childElement.getSelected());
 
         return convertView;
     }
 
+
+
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    @Override
+    public boolean areAllItemsEnabled() {
         return true;
     }
 }

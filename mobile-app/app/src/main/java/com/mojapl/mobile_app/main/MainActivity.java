@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().schemaVersion(2).build();
         Realm.setDefaultConfiguration(config);
+
     }
 
     @Override

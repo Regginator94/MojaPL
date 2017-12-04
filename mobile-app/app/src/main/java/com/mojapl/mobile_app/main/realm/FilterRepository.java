@@ -19,8 +19,8 @@ public class FilterRepository implements IFiltersRepository {
     @Override
     public void updateFilter(SettingElement settingElement, onGetAllFiltersCallback callback) {
         Realm realm = Realm.getDefaultInstance();
-        SettingElement settingElement1 = realm.where(SettingElement.class).contains("organizationID", String.valueOf(settingElement.getOrganizationID())).findFirst();
         realm.beginTransaction();
+        SettingElement settingElement1 = realm.where(SettingElement.class).contains("organizationID", String.valueOf(settingElement.getOrganizationID())).findFirst();
         settingElement1.setSelected((settingElement.getSelected()));
         realm.commitTransaction();
 

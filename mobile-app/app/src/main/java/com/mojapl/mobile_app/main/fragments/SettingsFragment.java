@@ -2,17 +2,23 @@ package com.mojapl.mobile_app.main.fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.ExpandableListAdapter;
+import com.mojapl.mobile_app.main.connection.Connector;
+import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
 import com.mojapl.mobile_app.main.listeners.SettingsChangeRequestListener;
+import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.FiltersUpdateResponse;
 import com.mojapl.mobile_app.main.models.SettingElement;
 import com.mojapl.mobile_app.main.realm.FilterRepository;
@@ -24,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.RealmResults;
 
 public class SettingsFragment extends Fragment implements SettingsChangeRequestListener, IEventsCallbeck {
@@ -34,6 +41,10 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
     List<SettingElement> events = new ArrayList<>();
     List<SettingElement> hobby = new ArrayList<>();
     List<SettingElement> rabat = new ArrayList<>();
+    List<SettingElement> updateData = new ArrayList<>();
+    Connector connector;
+    private SharedPreferences pref;
+    SettingsChangeRequestListener serverRequestListener;
     HashMap<String, List<SettingElement>> listDataChild;
     private IFiltersRepository repository = new FilterRepository();
     private IFiltersRepository.onSaveEventCallback onSaveEventCallback;
@@ -43,8 +54,61 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
     @BindView(R.id.el)
     ExpandableListView expandableListView;
 
+    @OnClick(R.id.confirm_button)
+    void onClickConfirmButton() {
+        updateData = new ArrayList<>();
+        for (int i = 0; i < university.size(); i++) {
+            if (university.get(i).getSelected()) {
+                updateData.add(university.get(i));
+            }
+        }
+        for (int i = 0; i < rabat.size(); i++) {
+            if (rabat.get(i).getSelected()) {
+                updateData.add(rabat.get(i));
+            }
+        }
+        for (int i = 0; i < hobby.size(); i++) {
+            if (hobby.get(i).getSelected()) {
+                updateData.add(hobby.get(i));
+            }
+        }
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getSelected()) {
+                updateData.add(events.get(i));
+            }
+        }
+        if (updateData.size() != 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < updateData.size(); i++) {
+                sb.append(String.valueOf(updateData.get(i).getOrganizationID()));
+                int j = i+1;
+                if(j < updateData.size()){
+                    sb.append(",");
+                }
+            }
+            Log.d("Confirmed", sb.toString());
+            connector.updateFilters(serverRequestListener, pref.getString("token", ""), sb.toString());
+
+        }
+    }
+
 
     public SettingsFragment() {
+        connector = Connector.getInstance();
+        serverRequestListener = new SettingsChangeRequestListener() {
+
+
+            @Override
+            public void serviceSuccess(FiltersUpdateResponse response) {
+                Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void serviceFailure(Exception e) {
+                Toast.makeText(getActivity(), "Zapis nie powiódł się", Toast.LENGTH_SHORT).show();
+
+            }
+        };
     }
 
 
@@ -54,9 +118,23 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
         ButterKnife.bind(this, view);
         subscribeCallbacks();
         prepareListData();
+        pref = getActivity().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
+
         listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
         // setting list adapter
         expandableListView.setAdapter(listAdapter);
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                SettingElement settingElement = (SettingElement) listAdapter.getChild(groupPosition, childPosition);
+
+                settingElement.getRealm().beginTransaction();
+                settingElement.setSelected(!settingElement.getSelected());
+                settingElement.getRealm().commitTransaction();
+                listAdapter.getChildView(groupPosition, childPosition, true, v,parent);
+                return false;
+            }
+        });
         return view;
     }
 
@@ -125,43 +203,53 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
             @Override
             public void onError(String message) {
 
-                university.add(new SettingElement("WEEIA", true, 2, 1));
-                university.add(new SettingElement("Mechaniczny", false, 3, 1));
-                university.add(new SettingElement("Chemiczny", false, 4, 1));
-                university.add(new SettingElement("WTMIWT", false, 5, 1));
-                university.add(new SettingElement("BINOŻ", false, 6, 1));
-                university.add(new SettingElement("BAI", false, 7, 1));
-                university.add(new SettingElement("FTIMS", false, 8, 1));
-                university.add(new SettingElement("WIPOS", false, 9, 1));
-
-
-                events.add(new SettingElement("Klub Futurysta", false, 201, 2));
-
-
-                hobby.add(new SettingElement("Żak", true, 301, 3));
-
-
-                rabat.add(new SettingElement("Pizzeria Finestra", true, 402, 4));
-
-
-                for (int i = 0; i < university.size(); i++) {
-                    repository.saveFilter(university.get(i), onSaveEventCallback);
-                }
-                for (int i = 0; i < events.size(); i++) {
-                    repository.saveFilter(events.get(i), onSaveEventCallback);
-                }
-                for (int i = 0; i < hobby.size(); i++) {
-                    repository.saveFilter(hobby.get(i), onSaveEventCallback);
-                }
-                for (int i = 0; i < rabat.size(); i++) {
-                    repository.saveFilter(rabat.get(i), onSaveEventCallback);
-                }
+                setListElement();
+                saveFiltersToDB();
                 listDataChild.put(listDataHeader.get(0), university); // Header, Child data
                 listDataChild.put(listDataHeader.get(1), events);
                 listDataChild.put(listDataHeader.get(2), hobby);
                 listDataChild.put(listDataHeader.get(3), rabat);
             }
         };
+    }
+
+    private void saveFiltersToDB() {
+        for (int i = 0; i < university.size(); i++) {
+            repository.saveFilter(university.get(i), onSaveEventCallback);
+        }
+        for (int i = 0; i < events.size(); i++) {
+            repository.saveFilter(events.get(i), onSaveEventCallback);
+        }
+        for (int i = 0; i < hobby.size(); i++) {
+            repository.saveFilter(hobby.get(i), onSaveEventCallback);
+        }
+        for (int i = 0; i < rabat.size(); i++) {
+            repository.saveFilter(rabat.get(i), onSaveEventCallback);
+        }
+    }
+
+    private void setListElement() {
+        university.add(new SettingElement("WEEIA", true, 2, 1));
+        university.add(new SettingElement("Mechaniczny", false, 3, 1));
+        university.add(new SettingElement("Chemiczny", false, 4, 1));
+
+
+        events.add(new SettingElement("Klub Futurysta", false, 201, 2));
+
+
+        hobby.add(new SettingElement("Żak", true, 301, 3));
+        hobby.add(new SettingElement("AZS Politechnika Lodzka", true, 304, 3));
+        hobby.add(new SettingElement("Biblioteka PL", true, 312, 3));
+        hobby.add(new SettingElement("Biuro Karier PL", true, 309, 3));
+        hobby.add(new SettingElement("Erasmus PL", true, 307, 3));
+        hobby.add(new SettingElement("Grupa .NET PL WEEIA", true, 310, 3));
+        hobby.add(new SettingElement("IAESTE PL", true, 305, 3));
+        hobby.add(new SettingElement("Samorząd PL", true, 308, 3));
+        hobby.add(new SettingElement("Spotted: PL", true, 308, 3));
+        hobby.add(new SettingElement("Zatoka Sportu", true, 311, 3));
+
+
+        rabat.add(new SettingElement("Pizzeria Finestra", true, 402, 4));
     }
 
     @Override

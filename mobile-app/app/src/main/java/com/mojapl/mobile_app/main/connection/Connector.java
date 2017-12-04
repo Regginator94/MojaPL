@@ -2,10 +2,12 @@ package com.mojapl.mobile_app.main.connection;
 
 import com.mojapl.mobile_app.main.Config;
 import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
+import com.mojapl.mobile_app.main.listeners.SettingsChangeRequestListener;
 import com.mojapl.mobile_app.main.listeners.UserRequestListener;
 import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.User;
 import com.mojapl.mobile_app.main.services.EventsService;
+import com.mojapl.mobile_app.main.services.SettingsService;
 import com.mojapl.mobile_app.main.services.UserService;
 
 import okhttp3.OkHttpClient;
@@ -64,8 +66,9 @@ public class Connector {
         userService.findUser(token, user);
     }
 
-    public  void updateFilters(ServerRequestListener serverRequestListener, String token, String filtersList){
-        EventsService eventsService = new EventsService(serverRequestListener);
+    public  void updateFilters(SettingsChangeRequestListener serverRequestListener, String token, String filtersList){
+        SettingsService eventsService = new SettingsService(serverRequestListener);
+        eventsService.updateFilters(token, filtersList);
 
     }
 

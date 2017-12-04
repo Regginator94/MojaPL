@@ -96,12 +96,12 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         onSaveEventCallback = new IEventRepository.onSaveEventCallback() {
             @Override
             public void onSuccess() {
-                Log.i("REALM", "success adding new events");
+
             }
 
             @Override
             public void onError(String message) {
-                Log.i("REALM", "error adding new events");
+
             }
         };
     }
