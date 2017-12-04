@@ -110,6 +110,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setText(childElement.getName());
         checkBox.setChecked(childElement.getSelected());
 
+
         return convertView;
     }
 

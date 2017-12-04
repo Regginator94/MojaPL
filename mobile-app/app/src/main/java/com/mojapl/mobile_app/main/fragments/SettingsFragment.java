@@ -9,16 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.mojapl.mobile_app.R;
 import com.mojapl.mobile_app.main.adapters.ExpandableListAdapter;
 import com.mojapl.mobile_app.main.connection.Connector;
-import com.mojapl.mobile_app.main.listeners.ServerRequestListener;
 import com.mojapl.mobile_app.main.listeners.SettingsChangeRequestListener;
-import com.mojapl.mobile_app.main.models.Event;
 import com.mojapl.mobile_app.main.models.FiltersUpdateResponse;
 import com.mojapl.mobile_app.main.models.SettingElement;
 import com.mojapl.mobile_app.main.realm.FilterRepository;
@@ -33,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.RealmResults;
 
-public class SettingsFragment extends Fragment implements SettingsChangeRequestListener, IEventsCallbeck {
+public class SettingsFragment extends Fragment implements SettingsChangeRequestListener, IEventsCallback {
 
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
@@ -42,7 +39,9 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
     List<SettingElement> hobby = new ArrayList<>();
     List<SettingElement> rabat = new ArrayList<>();
     List<SettingElement> updateData = new ArrayList<>();
+    List<SettingElement> toUpdate = new ArrayList<>();
     Connector connector;
+    private boolean saveData = false;
     private SharedPreferences pref;
     SettingsChangeRequestListener serverRequestListener;
     HashMap<String, List<SettingElement>> listDataChild;
@@ -87,6 +86,7 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
                 }
             }
             Log.d("Confirmed", sb.toString());
+            saveData = true;
             connector.updateFilters(serverRequestListener, pref.getString("token", ""), sb.toString());
 
         }
@@ -131,6 +131,7 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
                 settingElement.getRealm().beginTransaction();
                 settingElement.setSelected(!settingElement.getSelected());
                 settingElement.getRealm().commitTransaction();
+                toUpdate.add(settingElement);
                 listAdapter.getChildView(groupPosition, childPosition, true, v,parent);
                 return false;
             }
@@ -260,5 +261,23 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
     @Override
     public void serviceFailure(Exception e) {
 
+    }
+
+    @Override
+    public void onStop() {
+        cancelTransaction();
+        super.onStop();
+    }
+
+
+    void cancelTransaction(){
+        if(!saveData){
+            for(int i = 0; i<toUpdate.size(); i++){
+                SettingElement settingElement = toUpdate.get(i);
+                settingElement.getRealm().beginTransaction();
+                settingElement.setSelected(!settingElement.getSelected());
+                settingElement.getRealm().commitTransaction();
+            }
+        }
     }
 }
