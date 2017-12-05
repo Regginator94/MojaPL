@@ -100,12 +100,12 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
 
             @Override
             public void serviceSuccess(FiltersUpdateResponse response) {
-                Toast.makeText(getActivity(), R.string.message_settings_saved, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Zapisano ustawienia.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void serviceFailure(Exception e) {
-                Toast.makeText(getActivity(), "Zapis nie powiódł się", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Ustawienia niezapisane!", Toast.LENGTH_SHORT).show();
 
             }
         };
