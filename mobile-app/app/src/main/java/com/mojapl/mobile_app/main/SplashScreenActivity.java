@@ -49,6 +49,13 @@ public class SplashScreenActivity extends Activity implements UserRequestListene
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
+                SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);
+                String lastLogin = preferences.getString("lastLogin", null);
+                if (lastLogin != null) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("lastLogin", response.getLastLogin());
+                    editor.commit();
+                }
                 Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 SplashScreenActivity.this.startActivity(intent);
                 SplashScreenActivity.this.finish();
