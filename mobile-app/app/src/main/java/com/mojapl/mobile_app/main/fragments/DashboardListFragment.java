@@ -84,12 +84,18 @@ public class DashboardListFragment extends Fragment implements ServerRequestList
         mRecyclerView.setAdapter(adapter);
         ButterKnife.bind(this, view);
 
-        startLoading();
+//        startLoading();
 //        connectionConfig.getEventsByRegex(this, pref.getString("token", ""), "blog");
 
         setHasOptionsMenu(true);
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        events = null;
+        startLoading();
+        super.onResume();
     }
 
     private void startLoading() {

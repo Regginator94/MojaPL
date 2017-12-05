@@ -100,7 +100,7 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
 
             @Override
             public void serviceSuccess(FiltersUpdateResponse response) {
-                Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.message_settings_saved, Toast.LENGTH_SHORT).show();
             }
 
             @Override
