@@ -45,11 +45,11 @@ public class SplashScreenActivity extends Activity implements UserRequestListene
     }
 
     @Override
-    public void serviceSuccess(StatusResponse response) {
+    public void serviceSuccess(final StatusResponse response) {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                SharedPreferences preferences = this.getSharedPreferences("LoginData", MODE_PRIVATE);
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("LoginData", MODE_PRIVATE);
                 String lastLogin = preferences.getString("lastLogin", null);
                 if (lastLogin != null) {
                     SharedPreferences.Editor editor = preferences.edit();
