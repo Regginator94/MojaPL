@@ -16,7 +16,8 @@ exports.getNewsByOrgs = function(connection, response, userId){
 	    else{
 	    	const query = "SELECT E_ID, E_O_ID, E_C_ID, E_TEXT, E_TITLE, E_IMAGE_URL, E_START_DATE, E_CREATE_DATE, E_URL, E_FB_POST, E_TWEET, "+
 			"organizations.O_NAME FROM events JOIN organizations ON events.E_O_ID = organizations.O_ID "+
-			"JOIN categories ON events.E_C_ID = categories.C_ID where O_ID IN ("+result[0].UFBO_ORGS+")";
+			"JOIN categories ON events.E_C_ID = categories.C_ID where O_ID IN ("+result[0].UFBO_ORGS+") "+
+			"AND E_START_DATE < NOW() ORDER BY E_START_DATE DESC";
 	    	connection.query(query, function(err, result, fields){
 	    		if (err){
 			    	response.status(503);
@@ -64,7 +65,8 @@ exports.getNewsFiltered = function(connection, response,  categoryId, userId){
 	    	const query = "SELECT E_ID, E_O_ID, E_C_ID, E_TEXT, E_TITLE, E_IMAGE_URL, E_START_DATE, E_CREATE_DATE, E_URL, E_FB_POST, E_TWEET, "+
 			"organizations.O_NAME FROM events JOIN organizations ON events.E_O_ID = organizations.O_ID "+
 			"JOIN categories ON events.E_C_ID = categories.C_ID where E_C_ID = "+categoryId+" and "+
-			"E_O_ID IN ("+result[0].UFBO_ORGS+")";
+			"E_O_ID IN ("+result[0].UFBO_ORGS+") "+
+			"AND E_START_DATE < NOW() ORDER BY E_START_DATE DESC";
 	    	connection.query(query, function(err, result, fields){
 	    		if (err){
 			    	response.status(503);
@@ -112,7 +114,8 @@ exports.getNewsBySearch = function(connection, response, userId, regex){
 	    else{
 	    	const query = 'SELECT E_ID, E_O_ID, E_C_ID, E_TEXT, E_TITLE, E_IMAGE_URL, E_START_DATE, E_CREATE_DATE, E_URL, E_FB_POST, E_TWEET, '+
 			'organizations.O_NAME FROM events JOIN organizations ON events.E_O_ID = organizations.O_ID '+
-			'JOIN categories ON events.E_C_ID = categories.C_ID where O_ID IN ('+result[0].UFBO_ORGS+') AND  E_TEXT LIKE "%'+regex+'%"';
+			'JOIN categories ON events.E_C_ID = categories.C_ID where O_ID IN ('+result[0].UFBO_ORGS+') AND E_TEXT LIKE "%'+regex+'%" '+
+			'AND E_START_DATE < NOW() ORDER BY E_START_DATE DESC';
 	    	connection.query(query, function(err, result, fields){
 	    		if (err){
 			    	response.status(503);
