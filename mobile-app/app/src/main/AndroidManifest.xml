@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".main.LoginActivity"></activity>
-        <activity android:name=".main.MainActivity" android:configChanges="orientation"></activity>
+        <activity android:name=".main.MainActivity" android:configChanges="screenSize|orientation|screenLayout|navigation"></activity>
         <activity
             android:name=".main.RegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
