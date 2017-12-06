@@ -246,7 +246,7 @@ public class SettingsFragment extends Fragment implements SettingsChangeRequestL
         hobby.add(new SettingElement("Grupa .NET PL WEEIA", true, 310, 3));
         hobby.add(new SettingElement("IAESTE PL", true, 305, 3));
         hobby.add(new SettingElement("Samorząd PL", true, 308, 3));
-        hobby.add(new SettingElement("Spotted: PL", true, 308, 3));
+        hobby.add(new SettingElement("Spotted: PL", true, 306, 3));
         hobby.add(new SettingElement("Zatoka Sportu", true, 311, 3));
 
 
